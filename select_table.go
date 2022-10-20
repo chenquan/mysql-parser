@@ -3,7 +3,6 @@ package parser
 import (
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
@@ -35,25 +34,11 @@ type (
 		DottedIds []DottedId
 	}
 )
-type (
-	FunctionCall interface {
-		IsFunctionCall()
-	}
-)
 
 type (
 	SelectFunctionElement struct {
 	}
-	SpecificFunction interface {
-		IsSpecificFunction()
-	}
-	SimpleFunctionCall struct {
-		function string
-	}
 )
-
-func (s SimpleFunctionCall) IsSpecificFunction() {
-}
 
 func (s SelectStarElement) IsSelectElement() {
 }
@@ -115,9 +100,12 @@ func (v *parseTreeVisitor) VisitFullColumnName(ctx *parser.FullColumnNameContext
 	}
 
 	allDottedIdContext := ctx.AllDottedId()
-	dottedIds := make([]DottedId, 0, len(allDottedIdContext))
-	for _, context := range allDottedIdContext {
-		dottedIds = append(dottedIds, context.Accept(v).(DottedId))
+	var dottedIds []DottedId
+	if len(allDottedIdContext) != 0 {
+		dottedIds = make([]DottedId, 0, len(allDottedIdContext))
+		for _, context := range allDottedIdContext {
+			dottedIds = append(dottedIds, context.Accept(v).(DottedId))
+		}
 	}
 
 	return FullColumnName{
@@ -145,19 +133,4 @@ func (v *parseTreeVisitor) VisitSelectFunctionElement(ctx *parser.SelectFunction
 
 	return SelectFunctionElement{}
 
-}
-
-func (v *parseTreeVisitor) VisitSpecificFunctionCall(ctx *parser.SpecificFunctionCallContext) interface{} {
-	return ctx.Accept(v)
-}
-
-func (v *parseTreeVisitor) VisitSimpleFunctionCall(ctx *parser.SimpleFunctionCallContext) interface{} {
-	child := ctx.GetChild(0)
-
-	return SimpleFunctionCall{function: child.(*antlr.TerminalNodeImpl).GetText()}
-}
-func (v *parseTreeVisitor) VisitDataTypeFunctionCall(ctx *parser.DataTypeFunctionCallContext) interface{} {
-	child := ctx.GetChild(0)
-
-	return SimpleFunctionCall{function: child.(*antlr.TerminalNodeImpl).GetText()}
 }

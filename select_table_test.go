@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -10,7 +9,7 @@ import (
 )
 
 func createMySqlParser(sql string) (*parser.MySqlParser, *parseTreeVisitor) {
-	sql = strings.ToUpper(sql)
+	//sql = strings.ToUpper(sql)
 	inputStream := antlr.NewInputStream(sql)
 	lexer := parser.NewMySqlLexer(inputStream)
 	lexer.RemoveErrorListeners()
@@ -36,15 +35,15 @@ func Test_parseTreeVisitor_VisitFullId(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a.*")
 	result := mySqlParser.FullId().Accept(visitor)
 	assert.EqualValues(t, FullId{
-		Uid:   "A",
+		Uid:   "a",
 		DotId: "",
 	}, result)
 
 	mySqlParser, visitor = createMySqlParser("db_name.a.*")
 	result = mySqlParser.FullId().Accept(visitor)
 	assert.EqualValues(t, FullId{
-		Uid:   "DB_NAME",
-		DotId: "A",
+		Uid:   "db_name",
+		DotId: "a",
 	}, result)
 }
 
@@ -52,37 +51,37 @@ func Test_parseTreeVisitor_VisitSelectStarElement(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a.*")
 	result := mySqlParser.SelectElement().Accept(visitor)
 	assert.EqualValues(t, SelectStarElement{FullId: FullId{
-		Uid:   "A",
+		Uid:   "a",
 		DotId: "",
 	}}, result)
 
 	mySqlParser, visitor = createMySqlParser("db_name.a.*")
 	result = mySqlParser.SelectElement().Accept(visitor)
 	assert.EqualValues(t, SelectStarElement{FullId: FullId{
-		Uid:   "DB_NAME",
-		DotId: "A",
+		Uid:   "db_name",
+		DotId: "a",
 	}}, result)
 }
 
 func Test_parseTreeVisitor_VisitDottedId(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser(".name")
 	result := mySqlParser.DottedId().Accept(visitor)
-	assert.EqualValues(t, DottedId{Uid: "NAME"}, result)
+	assert.EqualValues(t, DottedId{Uid: "name"}, result)
 }
 
 func Test_parseTreeVisitor_VisitFullColumnName(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a.c.name")
 	result := mySqlParser.FullColumnName().Accept(visitor)
 	assert.EqualValues(t, FullColumnName{
-		Uid:       "A",
-		DottedIds: []DottedId{{Uid: "C"}, {Uid: "NAME"}},
+		Uid:       "a",
+		DottedIds: []DottedId{{Uid: "c"}, {Uid: "name"}},
 	}, result)
 
 	mySqlParser, visitor = createMySqlParser("a.c")
 	result = mySqlParser.FullColumnName().Accept(visitor)
 	assert.EqualValues(t, FullColumnName{
-		Uid:       "A",
-		DottedIds: []DottedId{{Uid: "C"}},
+		Uid:       "a",
+		DottedIds: []DottedId{{Uid: "c"}},
 	}, result)
 
 }
@@ -90,19 +89,8 @@ func Test_parseTreeVisitor_VisitFullColumnName(t *testing.T) {
 func Test_parseTreeVisitor_VisitSelectColumnElement(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a as b")
 	result := mySqlParser.SelectElement().Accept(visitor)
-	assert.EqualValues(t, SelectColumnElement{Alias: "B",
+	assert.EqualValues(t, SelectColumnElement{Alias: "b",
 		FullColumnName: FullColumnName{
-			Uid:       "A",
-			DottedIds: []DottedId{},
+			Uid: "a",
 		}}, result)
-}
-
-func Test_parseTreeVisitor_VisitSimpleFunctionCall(t *testing.T) {
-	mySqlParser, visitor := createMySqlParser("CURRENT_DATE")
-	result := mySqlParser.SpecificFunction().Accept(visitor)
-	assert.EqualValues(t, SimpleFunctionCall{function: "CURRENT_DATE"}, result)
-
-	mySqlParser, visitor = createMySqlParser("CURRENT_DATE()")
-	result = mySqlParser.SpecificFunction().Accept(visitor)
-	assert.EqualValues(t, SimpleFunctionCall{function: "CURRENT_DATE"}, result)
 }

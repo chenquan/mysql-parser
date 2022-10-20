@@ -4,11 +4,13 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
-type (
-	Expressions struct {
-		Expressions []Expression
-	}
+var (
+	_ Expression = (*LogicalExpression)(nil)
+	_ Expression = (*IsExpression)(nil)
+	_ Expression = (PredicateExpression)(nil)
+)
 
+type (
 	Expression interface {
 		IsExpression()
 	}
@@ -27,6 +29,12 @@ type (
 	}
 	PredicateExpression Predicate
 )
+
+func (i IsExpression) IsExpression() {
+}
+
+func (l LogicalExpression) IsExpression() {
+}
 
 func (v *parseTreeVisitor) VisitExpressions(ctx *parser.ExpressionsContext) interface{} {
 	allExpression := ctx.AllExpression()
@@ -47,12 +55,11 @@ func (v *parseTreeVisitor) VisitLogicalExpression(ctx *parser.LogicalExpressionC
 	return LogicalExpression{
 		LeftExpression:  expressionContexts[0].Accept(v).(Expression),
 		LogicalOperator: ctx.LogicalOperator().GetText(),
-		RightExpression: expressionContexts[0].Accept(v).(Expression),
+		RightExpression: expressionContexts[1].Accept(v).(Expression),
 	}
 }
 
 func (v *parseTreeVisitor) VisitIsExpression(ctx *parser.IsExpressionContext) interface{} {
-
 	return IsExpression{
 		predicateExpression: ctx.Predicate().Accept(v).(Predicate),
 		IsNot:               ctx.NOT() != nil,
