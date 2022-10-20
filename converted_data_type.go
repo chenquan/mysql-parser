@@ -54,7 +54,7 @@ func (v *parseTreeVisitor) VisitConvertedDataType(ctx *parser.ConvertedDataTypeC
 
 func (v *parseTreeVisitor) VisitLengthOneDimension(ctx *parser.LengthOneDimensionContext) interface{} {
 	deci := ctx.DecimalLiteral().GetText()
-	float, err := strconv.ParseFloat(deci, 10)
+	float, err := strconv.ParseFloat(deci, 64)
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +71,7 @@ func (v *parseTreeVisitor) VisitLengthTwoDimension(ctx *parser.LengthTwoDimensio
 }
 
 func toDecimal(v string) float64 {
-	float, err := strconv.ParseFloat(v, 10)
+	float, err := strconv.ParseFloat(v, 64)
 	if err != nil {
 		panic(err)
 	}
