@@ -9,7 +9,6 @@ import (
 )
 
 func createMySqlParser(sql string) (*parser.MySqlParser, *parseTreeVisitor) {
-	//sql = strings.ToUpper(sql)
 	inputStream := antlr.NewInputStream(sql)
 	lexer := parser.NewMySqlLexer(inputStream)
 	lexer.RemoveErrorListeners()
@@ -23,12 +22,109 @@ func createMySqlParser(sql string) (*parser.MySqlParser, *parseTreeVisitor) {
 }
 
 func TestParseTreeVisitor_VisitSelectElements(t *testing.T) {
-	mySqlParser, visitor := createMySqlParser("*")
-	result := mySqlParser.SelectElements().Accept(visitor)
-	assert.EqualValues(t, SelectElements{
-		All:            true,
-		SelectElements: nil,
-	}, result)
+	t.Run("all", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("*")
+		result := mySqlParser.SelectElements().Accept(visitor)
+		assert.EqualValues(t, SelectElements{
+			All:            true,
+			SelectElements: nil,
+		}, result)
+	})
+
+	t.Run("SelectColumnElement", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("a,b as b_t")
+		result := mySqlParser.SelectElements().Accept(visitor)
+		assert.EqualValues(t, SelectElements{
+			SelectElements: []SelectElement{
+				SelectColumnElement{
+					FullColumnName: FullColumnName{
+						Uid:       "a",
+						DottedIds: nil,
+					},
+					Alias: "",
+				},
+				SelectColumnElement{
+					FullColumnName: FullColumnName{
+						Uid:       "b",
+						DottedIds: nil,
+					},
+					Alias: "b_t",
+				},
+			},
+		}, result)
+	})
+
+	t.Run("SelectStarElement", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("a.*,b.*")
+		result := mySqlParser.SelectElements().Accept(visitor)
+		assert.EqualValues(t, SelectElements{
+			SelectElements: []SelectElement{
+				SelectStarElement{
+					TableName: FullId{
+						Uid: "a",
+					},
+				},
+				SelectStarElement{
+					TableName: FullId{
+						Uid: "b",
+					},
+				},
+			},
+		}, result)
+	})
+	t.Run("SelectStarElement&SelectColumnElement", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("a.*,b.*,c as c_t")
+		result := mySqlParser.SelectElements().Accept(visitor)
+		assert.EqualValues(t, SelectElements{
+			SelectElements: []SelectElement{
+				SelectStarElement{
+					TableName: FullId{
+						Uid: "a",
+					},
+				},
+				SelectStarElement{
+					TableName: FullId{
+						Uid: "b",
+					},
+				},
+				SelectColumnElement{
+					FullColumnName: FullColumnName{
+						Uid:       "c",
+						DottedIds: nil,
+					},
+					Alias: "c_t",
+				},
+			},
+		}, result)
+	})
+
+	t.Run("SelectFunctionElement", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("SUM(a) as c, count(*) as cnt")
+		result := mySqlParser.SelectElements().Accept(visitor)
+		assert.EqualValues(t, SelectElements{
+			SelectElements: []SelectElement{
+				SelectFunctionElement{
+					FunctionCall: AggregateWindowedFunction{
+						Function:   "SUM",
+						StarArg:    false,
+						Aggregator: "",
+						FunctionArg: &FunctionArg{
+							F: FullColumnName{Uid: "a"},
+						},
+					},
+					Alias: "c",
+				},
+				SelectFunctionElement{
+					FunctionCall: AggregateWindowedFunction{
+						Function: "count",
+						StarArg:  true,
+					},
+					Alias: "cnt",
+				},
+			},
+		}, result)
+
+	})
 }
 
 func Test_parseTreeVisitor_VisitFullId(t *testing.T) {
@@ -50,14 +146,14 @@ func Test_parseTreeVisitor_VisitFullId(t *testing.T) {
 func Test_parseTreeVisitor_VisitSelectStarElement(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a.*")
 	result := mySqlParser.SelectElement().Accept(visitor)
-	assert.EqualValues(t, SelectStarElement{FullId: FullId{
+	assert.EqualValues(t, SelectStarElement{TableName: FullId{
 		Uid:   "a",
 		DotId: "",
 	}}, result)
 
 	mySqlParser, visitor = createMySqlParser("db_name.a.*")
 	result = mySqlParser.SelectElement().Accept(visitor)
-	assert.EqualValues(t, SelectStarElement{FullId: FullId{
+	assert.EqualValues(t, SelectStarElement{TableName: FullId{
 		Uid:   "db_name",
 		DotId: "a",
 	}}, result)

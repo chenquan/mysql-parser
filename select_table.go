@@ -6,6 +6,12 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var (
+	_ SelectElement = (*SelectStarElement)(nil)
+	_ SelectElement = (*SelectColumnElement)(nil)
+	_ SelectElement = (*SelectFunctionElement)(nil)
+)
+
 type (
 	SelectElements struct {
 		All            bool
@@ -15,7 +21,7 @@ type (
 		IsSelectElement()
 	}
 	SelectStarElement struct {
-		FullId FullId
+		TableName FullId
 	}
 	SelectColumnElement struct {
 		FullColumnName FullColumnName
@@ -35,10 +41,18 @@ type (
 	}
 )
 
+func (s SelectColumnElement) IsSelectElement() {
+}
+
 type (
 	SelectFunctionElement struct {
+		FunctionCall FunctionCall
+		Alias        string
 	}
 )
+
+func (s SelectFunctionElement) IsSelectElement() {
+}
 
 func (s SelectStarElement) IsSelectElement() {
 }
@@ -53,8 +67,8 @@ func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext
 	selectElements := make([]SelectElement, 0, len(elementContexts))
 	for _, selectElementContext := range elementContexts {
 		switch selectElement := selectElementContext.(type) {
-		case *parser.SelectStarElementContext, *parser.SelectColumnElementContext:
-			selectElements = append(selectElements, selectElement.Accept(v).(SelectStarElement))
+		case *parser.SelectStarElementContext, *parser.SelectColumnElementContext, *parser.SelectFunctionElementContext:
+			selectElements = append(selectElements, selectElement.Accept(v).(SelectElement))
 		}
 	}
 
@@ -64,7 +78,7 @@ func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext
 }
 
 func (v *parseTreeVisitor) VisitSelectStarElement(ctx *parser.SelectStarElementContext) interface{} {
-	return SelectStarElement{FullId: ctx.FullId().Accept(v).(FullId)}
+	return SelectStarElement{TableName: ctx.FullId().Accept(v).(FullId)}
 }
 
 func (v *parseTreeVisitor) VisitFullId(ctx *parser.FullIdContext) interface{} {
@@ -130,7 +144,14 @@ func (v *parseTreeVisitor) VisitDottedId(ctx *parser.DottedIdContext) interface{
 }
 
 func (v *parseTreeVisitor) VisitSelectFunctionElement(ctx *parser.SelectFunctionElementContext) interface{} {
+	var alias string
+	uidContext := ctx.Uid()
+	if uidContext != nil {
+		alias = uidContext.GetText()
+	}
 
-	return SelectFunctionElement{}
-
+	return SelectFunctionElement{
+		FunctionCall: ctx.FunctionCall().Accept(v).(FunctionCall),
+		Alias:        alias,
+	}
 }

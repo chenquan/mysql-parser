@@ -63,12 +63,12 @@ func (v *parseTreeVisitor) VisitCreateDatabase(ctx *parser.CreateDatabaseContext
 }
 
 //func (v *parseTreeVisitor) VisitColumnCreateTable(ctx *parser.ColumnCreateTableContext) interface{} {
-//	tableName := ctx.TableName().GetText()
-//	tableName = strings.Trim(tableName, "`")
-//	tableName = strings.Trim(tableName, "'")
+//	TableName := ctx.TableName().GetText()
+//	TableName = strings.Trim(TableName, "`")
+//	TableName = strings.Trim(TableName, "'")
 //	replacer := strings.NewReplacer("\r", "", "\n", "")
-//	tableName = replacer.Replace(tableName)
-//	v.CreateTableNames = append(v.CreateTableNames, tableName)
+//	TableName = replacer.Replace(TableName)
+//	v.CreateTableNames = append(v.CreateTableNames, TableName)
 //	return nil
 //}
 

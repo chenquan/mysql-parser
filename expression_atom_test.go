@@ -52,5 +52,5 @@ func Test_parseTreeVisitor_VisitFullColumnNameExpressionAtom(t *testing.T) {
 func Test_parseTreeVisitor_VisitFunctionCallExpressionAtom(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("CURRENT_DATE()")
 	result := mySqlParser.ExpressionAtom().Accept(visitor)
-	assert.EqualValues(t, result, FunctionCallExpressionAtom{FunctionCall: SpecificFunctionCall{SpecificFunction: SimpleFunctionCall{function: "CURRENT_DATE"}}})
+	assert.EqualValues(t, result, FunctionCallExpressionAtom{FunctionCall: SpecificFunctionCall{SpecificFunction: SimpleFunctionCall{Function: "CURRENT_DATE"}}})
 }
