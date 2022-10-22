@@ -17,13 +17,18 @@ func (s SpecificFunctionCall) IsFunctionCall() {
 }
 
 func (v *parseTreeVisitor) VisitSpecificFunctionCall(ctx *parser.SpecificFunctionCallContext) interface{} {
-	children := ctx.GetChildren()
+	switch c := ctx.GetChild(0).(type) {
+	case *parser.SimpleFunctionCallContext:
+		return SpecificFunctionCall{SpecificFunction: c.Accept(v).(SpecificFunction)}
+	}
 
-	for _, child := range children {
-		switch c := child.(type) {
-		case *parser.SimpleFunctionCallContext:
-			return SpecificFunctionCall{SpecificFunction: c.Accept(v).(SpecificFunction)}
-		}
+	return nil
+}
+
+func (v *parseTreeVisitor) VisitAggregateFunctionCall(ctx *parser.AggregateFunctionCallContext) interface{} {
+	switch c := ctx.GetChild(0).(type) {
+	case *parser.AggregateWindowedFunctionContext:
+		return c.Accept(v).(FunctionCall)
 	}
 
 	return nil

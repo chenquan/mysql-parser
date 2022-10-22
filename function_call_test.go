@@ -10,7 +10,7 @@ func Test_parseTreeVisitor_VisitSpecificFunctionCall(t *testing.T) {
 	t.Run("SimpleFunctionCall", func(t *testing.T) {
 		mySqlParser, visitor := createMySqlParser("CURRENT_DATE")
 		result := mySqlParser.SpecificFunction().Accept(visitor)
-		assert.EqualValues(t, SimpleFunctionCall{function: "CURRENT_DATE"}, result)
+		assert.EqualValues(t, SimpleFunctionCall{Function: "CURRENT_DATE"}, result)
 	})
 
 	t.Run("SimpleFunctionCall", func(t *testing.T) {

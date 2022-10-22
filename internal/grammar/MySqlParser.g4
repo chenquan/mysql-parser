@@ -2531,10 +2531,10 @@ passwordFunctionClause
     ;
 
 functionArgs
-    : (constant | fullColumnName | functionCall | expression)
+    : functionArg
     (
       ','
-      (constant | fullColumnName | functionCall | expression)
+      functionArg
     )*
     ;
 

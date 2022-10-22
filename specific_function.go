@@ -10,7 +10,7 @@ type (
 		IsSpecificFunction()
 	}
 	SimpleFunctionCall struct {
-		function string
+		Function string
 	}
 	DataTypeFunctionCall struct {
 		Function          string
@@ -27,7 +27,7 @@ func (d DataTypeFunctionCall) IsFunctionCall() {
 
 func (v *parseTreeVisitor) VisitSimpleFunctionCall(ctx *parser.SimpleFunctionCallContext) interface{} {
 	child := ctx.GetChild(0)
-	return SimpleFunctionCall{function: child.(*antlr.TerminalNodeImpl).GetText()}
+	return SimpleFunctionCall{Function: child.(*antlr.TerminalNodeImpl).GetText()}
 }
 
 func (v *parseTreeVisitor) VisitDataTypeFunctionCall(ctx *parser.DataTypeFunctionCallContext) interface{} {
