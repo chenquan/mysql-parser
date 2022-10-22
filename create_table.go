@@ -145,17 +145,6 @@ func (v *parseTreeVisitor) VisitPrimaryKeyTableConstraint(ctx *parser.PrimaryKey
 	}
 }
 
-func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificationContext) interface{} {
-	selectSpecContexts := ctx.AllSelectSpec()
-	selectSpecs := make([]string, len(selectSpecContexts))
-	for i, selectSpecContext := range selectSpecContexts {
-		selectSpecs[i] = selectSpecContext.GetText()
-	}
-
-	return QuerySpecification{
-		SelectSpecs: selectSpecs,
-	}
-}
 func (v *parseTreeVisitor) VisitColumnCreateTable(ctx *parser.ColumnCreateTableContext) interface{} {
 	return nil
 }

@@ -101,6 +101,7 @@ func (v *parseTreeVisitor) VisitBinaryComparisonPredicate(ctx *parser.BinaryComp
 		RightPredicate:     toPredicate(allPredicate[1].Accept(v)),
 	}
 }
+
 func toPredicate(v interface{}) Predicate {
 	if v != nil {
 		return v.(Predicate)
