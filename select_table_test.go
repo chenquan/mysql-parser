@@ -60,12 +60,12 @@ func TestParseTreeVisitor_VisitSelectElements(t *testing.T) {
 		assert.EqualValues(t, SelectElements{
 			SelectElements: []SelectElement{
 				SelectStarElement{
-					tableName: FullId{
+					TableName: FullId{
 						Uid: "a",
 					},
 				},
 				SelectStarElement{
-					tableName: FullId{
+					TableName: FullId{
 						Uid: "b",
 					},
 				},
@@ -78,12 +78,12 @@ func TestParseTreeVisitor_VisitSelectElements(t *testing.T) {
 		assert.EqualValues(t, SelectElements{
 			SelectElements: []SelectElement{
 				SelectStarElement{
-					tableName: FullId{
+					TableName: FullId{
 						Uid: "a",
 					},
 				},
 				SelectStarElement{
-					tableName: FullId{
+					TableName: FullId{
 						Uid: "b",
 					},
 				},
@@ -119,14 +119,14 @@ func Test_parseTreeVisitor_VisitFullId(t *testing.T) {
 func Test_parseTreeVisitor_VisitSelectStarElement(t *testing.T) {
 	mySqlParser, visitor := createMySqlParser("a.*")
 	result := mySqlParser.SelectElement().Accept(visitor)
-	assert.EqualValues(t, SelectStarElement{tableName: FullId{
+	assert.EqualValues(t, SelectStarElement{TableName: FullId{
 		Uid:   "a",
 		DotId: "",
 	}}, result)
 
 	mySqlParser, visitor = createMySqlParser("db_name.a.*")
 	result = mySqlParser.SelectElement().Accept(visitor)
-	assert.EqualValues(t, SelectStarElement{tableName: FullId{
+	assert.EqualValues(t, SelectStarElement{TableName: FullId{
 		Uid:   "db_name",
 		DotId: "a",
 	}}, result)

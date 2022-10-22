@@ -21,7 +21,7 @@ type (
 		IsSelectElement()
 	}
 	SelectStarElement struct {
-		tableName FullId
+		TableName FullId
 	}
 	SelectColumnElement struct {
 		FullColumnName FullColumnName
@@ -76,7 +76,7 @@ func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext
 }
 
 func (v *parseTreeVisitor) VisitSelectStarElement(ctx *parser.SelectStarElementContext) interface{} {
-	return SelectStarElement{tableName: ctx.FullId().Accept(v).(FullId)}
+	return SelectStarElement{TableName: ctx.FullId().Accept(v).(FullId)}
 }
 
 func (v *parseTreeVisitor) VisitFullId(ctx *parser.FullIdContext) interface{} {
