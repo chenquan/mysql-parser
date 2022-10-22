@@ -6,6 +6,12 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var (
+	_ SelectElement = (*SelectStarElement)(nil)
+	_ SelectElement = (*SelectColumnElement)(nil)
+	_ SelectElement = (*SelectFunctionElement)(nil)
+)
+
 type (
 	SelectElements struct {
 		All            bool
@@ -15,7 +21,7 @@ type (
 		IsSelectElement()
 	}
 	SelectStarElement struct {
-		FullId FullId
+		tableName FullId
 	}
 	SelectColumnElement struct {
 		FullColumnName FullColumnName
@@ -35,10 +41,16 @@ type (
 	}
 )
 
+func (s SelectColumnElement) IsSelectElement() {
+}
+
 type (
 	SelectFunctionElement struct {
 	}
 )
+
+func (s SelectFunctionElement) IsSelectElement() {
+}
 
 func (s SelectStarElement) IsSelectElement() {
 }
@@ -54,7 +66,7 @@ func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext
 	for _, selectElementContext := range elementContexts {
 		switch selectElement := selectElementContext.(type) {
 		case *parser.SelectStarElementContext, *parser.SelectColumnElementContext:
-			selectElements = append(selectElements, selectElement.Accept(v).(SelectStarElement))
+			selectElements = append(selectElements, selectElement.Accept(v).(SelectElement))
 		}
 	}
 
@@ -64,7 +76,7 @@ func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext
 }
 
 func (v *parseTreeVisitor) VisitSelectStarElement(ctx *parser.SelectStarElementContext) interface{} {
-	return SelectStarElement{FullId: ctx.FullId().Accept(v).(FullId)}
+	return SelectStarElement{tableName: ctx.FullId().Accept(v).(FullId)}
 }
 
 func (v *parseTreeVisitor) VisitFullId(ctx *parser.FullIdContext) interface{} {
