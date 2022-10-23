@@ -10,6 +10,7 @@ type (
 		SelectElements       SelectElements
 		FromClause           *FromClause
 		SelectIntoExpression SelectIntoExpression
+		GroupByClause        *GroupByClause
 	}
 )
 
@@ -37,11 +38,17 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 	if selectIntoExpressionContext != nil {
 		selectIntoExpression = selectIntoExpressionContext.Accept(v).(SelectIntoExpression)
 	}
-
+	var groupByClause *GroupByClause
+	groupByClauseContext := ctx.GroupByClause()
+	if groupByClauseContext != nil {
+		clause := groupByClauseContext.Accept(v).(GroupByClause)
+		groupByClause = &clause
+	}
 	return QuerySpecification{
 		SelectSpecs:          selectSpecs,
 		SelectElements:       ctx.SelectElements().Accept(v).(SelectElements),
 		FromClause:           fromClause,
 		SelectIntoExpression: selectIntoExpression,
+		GroupByClause:        groupByClause,
 	}
 }

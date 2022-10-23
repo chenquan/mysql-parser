@@ -79,4 +79,40 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 			}},
 		}, result)
 	})
+
+	t.Run("4", func(t *testing.T) {
+		parser, visitor := createMySqlParser(`SELECT * FROM U group by a desc, c asc`)
+		result := parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				All: true,
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			GroupByClause: &GroupByClause{GroupByItems: []GroupByItem{
+				{
+					Expression: ExpressionAtomPredicate{
+						ExpressionAtom: FullColumnNameExpressionAtom{
+							FullColumnName: FullColumnName{Uid: "a"},
+						},
+					},
+					Order: "desc",
+				},
+				{
+					Expression: ExpressionAtomPredicate{
+						ExpressionAtom: FullColumnNameExpressionAtom{
+							FullColumnName: FullColumnName{Uid: "c"},
+						},
+					},
+					Order: "asc",
+				},
+			}},
+		}, result)
+	})
 }
