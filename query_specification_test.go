@@ -115,4 +115,55 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 			}},
 		}, result)
 	})
+
+	t.Run("5", func(t *testing.T) {
+		parser, visitor := createMySqlParser(`SELECT name,avg(a) FROM U group by name having avg(a) > 1`)
+		result := parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				SelectElements: []SelectElement{
+					SelectColumnElement{FullColumnName: FullColumnName{Uid: "name"}},
+					SelectFunctionElement{FunctionCall: AggregateWindowedFunction{
+						Function:    "avg",
+						StarArg:     false,
+						Aggregator:  "",
+						FunctionArg: &FunctionArg{F: FullColumnName{Uid: "a"}},
+					}},
+				},
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			GroupByClause: &GroupByClause{
+				GroupByItems: []GroupByItem{
+					{
+						Expression: ExpressionAtomPredicate{
+							ExpressionAtom: FullColumnNameExpressionAtom{
+								FullColumnName: FullColumnName{Uid: "name"},
+							},
+						},
+					},
+				},
+			},
+			HavingClause: &HavingClause{
+				Expression: BinaryComparisonPredicate{
+					LeftPredicate: ExpressionAtomPredicate{
+						ExpressionAtom: FunctionCallExpressionAtom{FunctionCall: AggregateWindowedFunction{
+							Function: "avg",
+							FunctionArg: &FunctionArg{F: FullColumnName{
+								Uid: "a",
+							}},
+						}},
+					},
+					ComparisonOperator: ">",
+					RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
+				},
+			},
+		}, result)
+	})
 }
