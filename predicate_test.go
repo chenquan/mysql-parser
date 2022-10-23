@@ -111,5 +111,4 @@ func Test_parseTreeVisitor_VisitInPredicate(t *testing.T) {
 			},
 		}, result)
 	})
-
 }
