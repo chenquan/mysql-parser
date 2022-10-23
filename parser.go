@@ -8,12 +8,11 @@ import (
 )
 
 type Result struct {
-	CreateDatabaseNames []string `json:"createDatabaseNames"`
-	AlterDatabaseNames  []string `json:"alterDatabaseNames"`
-	DropDatabaseNames   []string `json:"dropDatabaseNames"`
+	DropDatabaseNames []string `json:"dropDatabaseNames"`
 
-	AlterTables []AlterTable
-	CreatTables []CreatTable
+	AlterTables      []AlterTable
+	CreatTables      []CreatTable
+	SelectStatements []SelectStatement
 }
 
 type parseTreeVisitor struct {
@@ -49,48 +48,43 @@ func (v *parseTreeVisitor) VisitSqlStatements(ctx *parser.SqlStatementsContext) 
 
 // VisitSqlStatement visits a parse tree produced by MySqlParser#sqlStatement.
 func (v *parseTreeVisitor) VisitSqlStatement(ctx *parser.SqlStatementContext) interface{} {
-	if ctx.DdlStatement() != nil {
-		return ctx.DdlStatement().Accept(v)
+	ddlStatement := ctx.DdlStatement()
+	if ddlStatement != nil {
+		return ddlStatement.Accept(v)
+	}
+
+	dmlStatement := ctx.DmlStatement()
+	if dmlStatement != nil {
+		return dmlStatement.Accept(v)
 	}
 
 	return nil
 }
 
 func (v *parseTreeVisitor) VisitCreateDatabase(ctx *parser.CreateDatabaseContext) interface{} {
-	//v.CreateDatabaseNames = append(v.CreateDatabaseNames, ctx.Uid().GetText())
+	// TODO CreateDatabase
 
 	return nil
 }
 
-//func (v *parseTreeVisitor) VisitColumnCreateTable(ctx *parser.ColumnCreateTableContext) interface{} {
-//	TableName := ctx.TableName().GetText()
-//	TableName = strings.Trim(TableName, "`")
-//	TableName = strings.Trim(TableName, "'")
-//	replacer := strings.NewReplacer("\r", "", "\n", "")
-//	TableName = replacer.Replace(TableName)
-//	v.CreateTableNames = append(v.CreateTableNames, TableName)
-//	return nil
-//}
-
 func (v *parseTreeVisitor) VisitDropDatabase(ctx *parser.DropDatabaseContext) interface{} {
-	v.DropDatabaseNames = append(v.DropDatabaseNames, ctx.Uid().GetText())
-	return nil
+	return ctx.Uid().GetText()
 }
 
 func (v *parseTreeVisitor) VisitAlterSimpleDatabase(ctx *parser.AlterSimpleDatabaseContext) interface{} {
-	v.AlterDatabaseNames = append(v.AlterDatabaseNames, ctx.Uid().GetText())
+	// TODO AlterSimpleDatabase
 	return nil
 }
 
 func (v *parseTreeVisitor) VisitAlterUpgradeName(ctx *parser.AlterUpgradeNameContext) interface{} {
-	v.AlterDatabaseNames = append(v.AlterDatabaseNames, ctx.Uid().GetText())
+	// TODO AlterUpgradeName
 	return nil
 }
 
 func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) interface{} {
-	if ctx.CreateTable() != nil {
-
-		switch create := ctx.CreateTable().(type) {
+	createTableContext := ctx.CreateTable()
+	if createTableContext != nil {
+		switch create := createTableContext.(type) {
 		case *parser.CopyCreateTableContext:
 			createTable := create.Accept(v).(CopyCreateTable)
 			v.CreatTables = append(v.CreatTables, createTable)
@@ -105,28 +99,32 @@ func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) in
 		return nil
 	}
 
-	if ctx.CreateDatabase() != nil {
-		ctx.CreateDatabase().Accept(v)
+	createDatabaseContext := ctx.CreateDatabase()
+	if createDatabaseContext != nil {
+		// TODO CreateDatabase
+		createDatabaseContext.Accept(v)
 		return nil
 	}
 
-	if ctx.DropDatabase() != nil {
-		ctx.DropDatabase().Accept(v)
+	dropDatabaseContext := ctx.DropDatabase()
+	if dropDatabaseContext != nil {
+		v.DropDatabaseNames = append(v.DropDatabaseNames, dropDatabaseContext.Accept(v).(string))
 		return nil
 	}
 
-	if ctx.AlterDatabase() != nil {
-		switch alter := ctx.AlterDatabase().(type) {
-		case *parser.AlterSimpleDatabaseContext:
-			alter.Accept(v)
-		case *parser.AlterUpgradeNameContext:
+	alterDatabaseContext := ctx.AlterDatabase()
+	if alterDatabaseContext != nil {
+		switch alter := alterDatabaseContext.(type) {
+		case *parser.AlterSimpleDatabaseContext, *parser.AlterUpgradeNameContext:
+			// TODO AlterDatabase
 			alter.Accept(v)
 		}
 		return nil
 	}
 
-	if ctx.AlterTable() != nil {
-		v.AlterTables = append(v.AlterTables, ctx.AlterTable().Accept(v).(AlterTable))
+	alterTableContext := ctx.AlterTable()
+	if alterTableContext != nil {
+		v.AlterTables = append(v.AlterTables, alterTableContext.Accept(v).(AlterTable))
 		return nil
 	}
 
@@ -140,7 +138,18 @@ func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interfac
 
 func (v *parseTreeVisitor) VisitPartitionDefinitions(ctx *parser.PartitionDefinitionsContext) interface{} {
 	for _, c := range ctx.AllPartitionDefinition() {
+		// TODO PartitionDefinitions
 		fmt.Println(c.GetText())
+	}
+
+	return nil
+}
+
+func (v *parseTreeVisitor) VisitDmlStatement(ctx *parser.DmlStatementContext) interface{} {
+	selectStatementContext := ctx.SelectStatement()
+	if selectStatementContext != nil {
+		v.SelectStatements = append(v.SelectStatements, selectStatementContext.Accept(v).(SelectStatement))
+		return nil
 	}
 
 	return nil
