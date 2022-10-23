@@ -12,6 +12,7 @@ type (
 		SelectIntoExpression SelectIntoExpression
 		GroupByClause        *GroupByClause
 		HavingClause         *HavingClause
+		OrderByClause        *OrderByClause
 	}
 )
 
@@ -54,6 +55,13 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		havingClause = &clause
 	}
 
+	var orderByClause *OrderByClause
+	orderByClauseContext := ctx.OrderByClause()
+	if orderByClauseContext != nil {
+		clause := orderByClauseContext.Accept(v).(OrderByClause)
+		orderByClause = &clause
+	}
+
 	return QuerySpecification{
 		SelectSpecs:          selectSpecs,
 		SelectElements:       ctx.SelectElements().Accept(v).(SelectElements),
@@ -61,5 +69,6 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		SelectIntoExpression: selectIntoExpression,
 		GroupByClause:        groupByClause,
 		HavingClause:         havingClause,
+		OrderByClause:        orderByClause,
 	}
 }

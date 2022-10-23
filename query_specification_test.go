@@ -25,6 +25,7 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 		}, result)
 
 	})
+
 	t.Run("2", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT count(*) as cnt FROM U`)
 		result := parser.QuerySpecification().Accept(visitor)
@@ -166,4 +167,38 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 			},
 		}, result)
 	})
+
+	t.Run("6", func(t *testing.T) {
+		parser, visitor := createMySqlParser(`SELECT name FROM U order by a desc `)
+		result := parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				SelectElements: []SelectElement{
+					SelectColumnElement{FullColumnName: FullColumnName{Uid: "name"}},
+				},
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			OrderByClause: &OrderByClause{
+				OrderByExpressions: []OrderByExpression{
+					{
+						Expression: ExpressionAtomPredicate{ExpressionAtom: FullColumnNameExpressionAtom{
+							FullColumnName: FullColumnName{
+								Uid:       "a",
+								DottedIds: nil,
+							},
+						}},
+						Order: "desc",
+					},
+				},
+			},
+		}, result)
+	})
+
 }
