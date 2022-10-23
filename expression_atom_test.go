@@ -65,7 +65,7 @@ func Test_parseTreeVisitor_VisitMathExpressionAtom(t *testing.T) {
 					Uid: "a",
 				}},
 				MathOperator:        "+",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 			},
 			result)
 	})
@@ -75,9 +75,9 @@ func Test_parseTreeVisitor_VisitMathExpressionAtom(t *testing.T) {
 		result := mySqlParser.ExpressionAtom().Accept(visitor)
 		assert.EqualValues(t,
 			MathExpressionAtom{
-				LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}},
+				LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}},
 				MathOperator:        "+",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 			},
 			result)
 	})
@@ -88,12 +88,12 @@ func Test_parseTreeVisitor_VisitMathExpressionAtom(t *testing.T) {
 		assert.EqualValues(t,
 			MathExpressionAtom{
 				LeftExpressionAtom: MathExpressionAtom{
-					LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}},
+					LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}},
 					MathOperator:        "+",
-					RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+					RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 				},
 				MathOperator:        "+",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "3"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 3}},
 			},
 			result)
 
@@ -106,13 +106,13 @@ func Test_parseTreeVisitor_VisitMathExpressionAtom(t *testing.T) {
 			MathExpressionAtom{
 				LeftExpressionAtom: NestedExpressionAtom{Expressions: []Expression{
 					ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
-						LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+						LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 						MathOperator:        "+",
-						RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "3"}},
+						RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 3}},
 					}},
 				}},
 				MathOperator:        "*",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}},
 			},
 			result)
 

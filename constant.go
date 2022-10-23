@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"strings"
+
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
@@ -28,7 +30,7 @@ type (
 		Val string
 	}
 	ConstantDecimal struct {
-		Val string
+		Val float64
 	}
 	ConstantHexadecimal struct {
 		Val string
@@ -66,7 +68,7 @@ func (v *parseTreeVisitor) VisitConstant(ctx *parser.ConstantContext) interface{
 
 	stringLiteralContext := ctx.StringLiteral()
 	if stringLiteralContext != nil {
-		return ConstantString{Val: stringLiteralContext.GetText()}
+		return ConstantString{Val: stringLiteralContext.Accept(v).(string)}
 	}
 
 	decimalContext := ctx.DecimalLiteral()
@@ -78,7 +80,7 @@ func (v *parseTreeVisitor) VisitConstant(ctx *parser.ConstantContext) interface{
 		}
 		decimal += decimalContext.GetText()
 
-		return ConstantDecimal{Val: decimal}
+		return ConstantDecimal{Val: toDecimal(decimal)}
 	}
 
 	hexadecimalLiteralContext := ctx.HexadecimalLiteral()
@@ -118,4 +120,12 @@ func (v *parseTreeVisitor) VisitConstant(ctx *parser.ConstantContext) interface{
 	}
 
 	return ctx.GetText()
+}
+
+var quotaReplacer = strings.NewReplacer("'", "", `"`, "", `\'`, "")
+
+func (v *parseTreeVisitor) VisitStringLiteral(ctx *parser.StringLiteralContext) interface{} {
+	text := ctx.STRING_LITERAL(0).GetText()
+	// TODO
+	return quotaReplacer.Replace(text)
 }

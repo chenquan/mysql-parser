@@ -31,7 +31,7 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 					Uid: "a",
 				}},
 				MathOperator:        "+",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 			}}},
 		}, result)
 	})
@@ -43,9 +43,9 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 			Function: "SUM",
 			StarArg:  false,
 			FunctionArg: &FunctionArg{F: ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
-				LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+				LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 				MathOperator:        "MOD",
-				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}},
+				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 			}}},
 		}, result)
 	})
