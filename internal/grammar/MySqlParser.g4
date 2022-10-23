@@ -1183,7 +1183,9 @@ limitClause
     ;
 
 limitClauseAtom
-	: decimalLiteral | mysqlVariable | simpleId
+	: DECIMAL_LITERAL | TWO_DECIMAL | ONE_DECIMAL | ZERO_DECIMAL
+//	| mysqlVariable
+//	| simpleId
 	;
 
 
