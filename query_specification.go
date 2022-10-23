@@ -13,6 +13,7 @@ type (
 		GroupByClause        *GroupByClause
 		HavingClause         *HavingClause
 		OrderByClause        *OrderByClause
+		LimitClause          *LimitClause
 	}
 )
 
@@ -61,6 +62,12 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		clause := orderByClauseContext.Accept(v).(OrderByClause)
 		orderByClause = &clause
 	}
+	var limitClause *LimitClause
+	limitClauseContext := ctx.LimitClause()
+	if limitClauseContext != nil {
+		clause := limitClauseContext.Accept(v).(LimitClause)
+		limitClause = &clause
+	}
 
 	return QuerySpecification{
 		SelectSpecs:          selectSpecs,
@@ -70,5 +77,6 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		GroupByClause:        groupByClause,
 		HavingClause:         havingClause,
 		OrderByClause:        orderByClause,
+		LimitClause:          limitClause,
 	}
 }

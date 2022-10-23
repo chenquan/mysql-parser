@@ -201,4 +201,63 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 		}, result)
 	})
 
+	t.Run("7", func(t *testing.T) {
+		parser, visitor := createMySqlParser(`SELECT name FROM U LIMIT 2`)
+		result := parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				SelectElements: []SelectElement{
+					SelectColumnElement{FullColumnName: FullColumnName{Uid: "name"}},
+				},
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			LimitClause: &LimitClause{Limit: 2},
+		}, result)
+
+		parser, visitor = createMySqlParser(`SELECT name FROM U LIMIT 2,3 `)
+		result = parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				SelectElements: []SelectElement{
+					SelectColumnElement{FullColumnName: FullColumnName{Uid: "name"}},
+				},
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			LimitClause: &LimitClause{Limit: 3, Offset: 2},
+		}, result)
+
+		parser, visitor = createMySqlParser(`SELECT name FROM U LIMIT 3 OFFSET 2 `)
+		result = parser.QuerySpecification().Accept(visitor)
+		assert.EqualValues(t, QuerySpecification{
+			SelectSpecs: nil,
+			SelectElements: SelectElements{
+				SelectElements: []SelectElement{
+					SelectColumnElement{FullColumnName: FullColumnName{Uid: "name"}},
+				},
+			},
+			FromClause: &FromClause{
+				TableSources: &TableSources{
+					TableSources: []TableSource{
+						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
+					},
+				},
+			},
+			LimitClause: &LimitClause{Limit: 3, Offset: 2},
+		}, result)
+	})
+
 }
