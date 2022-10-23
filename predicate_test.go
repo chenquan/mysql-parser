@@ -26,9 +26,9 @@ func Test_parseTreeVisitor_VisitBinaryComparisonPredicate(t *testing.T) {
 		parser, visitor := createMySqlParser("1!=1")
 		result := parser.Predicate().Accept(visitor)
 		assert.EqualValues(t, BinaryComparisonPredicate{
-			LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 			ComparisonOperator: "!=",
-			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 		}, result)
 	})
 
@@ -40,7 +40,7 @@ func Test_parseTreeVisitor_VisitBinaryComparisonPredicate(t *testing.T) {
 				Uid: "a",
 			}}},
 			ComparisonOperator: "!=",
-			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 		}, result)
 	})
 
@@ -53,22 +53,63 @@ func Test_parseTreeVisitor_VisitBinaryComparisonPredicate(t *testing.T) {
 				DottedIds: []DottedId{{Uid: "b"}, {Uid: "c"}},
 			}}},
 			ComparisonOperator: "!=",
-			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 		}, result)
 	})
 
 }
 
 func Test_parseTreeVisitor_VisitInPredicate(t *testing.T) {
-	//t.Run("1", func(t *testing.T) {
-	//	parser, visitor := createMySqlParser("a in (1,23,3)")
-	//	result := parser.Predicate().Accept(visitor)
-	//	assert.EqualValues(t, InPredicate{
-	//		Predicate: nil,
-	//		NotIn:     false,
-	//		Expressions: ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: Constant{Val: }}}(),
-	//
-	//	}, result)
-	//})
+	t.Run("1", func(t *testing.T) {
+		parser, visitor := createMySqlParser("a in (1,23,3)")
+		result := parser.Predicate().Accept(visitor)
+		assert.EqualValues(t, InPredicate{
+			Predicate: ExpressionAtomPredicate{ExpressionAtom: FullColumnNameExpressionAtom{FullColumnName: FullColumnName{Uid: "a"}}},
+			NotIn:     false,
+			Expressions: []Expression{
+				ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 23}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 3}},
+				},
+			},
+		}, result)
+	})
+
+	t.Run("2", func(t *testing.T) {
+		parser, visitor := createMySqlParser(`a in ('1','2','3')`)
+		result := parser.Predicate().Accept(visitor)
+		assert.EqualValues(t, InPredicate{
+			Predicate: ExpressionAtomPredicate{ExpressionAtom: FullColumnNameExpressionAtom{FullColumnName: FullColumnName{Uid: "a"}}},
+			NotIn:     false,
+			Expressions: []Expression{
+				ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "1"}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "2"}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "3"}},
+				},
+			},
+		}, result)
+
+		parser, visitor = createMySqlParser(`a in ("1","2","3")`)
+		result = parser.Predicate().Accept(visitor)
+		assert.EqualValues(t, InPredicate{
+			Predicate: ExpressionAtomPredicate{ExpressionAtom: FullColumnNameExpressionAtom{FullColumnName: FullColumnName{Uid: "a"}}},
+			NotIn:     false,
+			Expressions: []Expression{
+				ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "1"}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "2"}},
+				}, ExpressionAtomPredicate{
+					ExpressionAtom: ConstantExpressionAtom{Constant: ConstantString{Val: "3"}},
+				},
+			},
+		}, result)
+	})
 
 }

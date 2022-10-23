@@ -19,9 +19,9 @@ func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
 		result := mySqlParser.Expression().Accept(visitor)
 		assert.EqualValues(t, LogicalExpression{
 			LeftExpression: BinaryComparisonPredicate{
-				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 				ComparisonOperator: "!=",
-				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 			},
 			LogicalOperator: "AND",
 			RightExpression: BinaryComparisonPredicate{
@@ -29,7 +29,7 @@ func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
 					Uid: "a",
 				}}},
 				ComparisonOperator: "!=",
-				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}}},
+				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}}},
 			},
 		}, result)
 	})
@@ -40,9 +40,9 @@ func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
 		assert.EqualValues(t, LogicalExpression{
 			LeftExpression: LogicalExpression{
 				LeftExpression: BinaryComparisonPredicate{
-					LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+					LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 					ComparisonOperator: "!=",
-					RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+					RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 				},
 				LogicalOperator: "AND",
 				RightExpression: BinaryComparisonPredicate{
@@ -50,7 +50,7 @@ func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
 						Uid: "a",
 					}}},
 					ComparisonOperator: "!=",
-					RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}}},
+					RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}}},
 				},
 			},
 			LogicalOperator: "AND",
@@ -59,7 +59,7 @@ func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
 					Uid: "A",
 				}}},
 				ComparisonOperator: "!=",
-				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "3"}}},
+				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 3}}},
 			},
 		}, result)
 	})
@@ -71,9 +71,9 @@ func Test_parseTreeVisitor_VisitIsExpression(t *testing.T) {
 		result := mySqlParser.Expression().Accept(visitor)
 		assert.EqualValues(t, IsExpression{
 			predicateExpression: BinaryComparisonPredicate{
-				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 				ComparisonOperator: "!=",
-				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 			},
 			IsNot:     false,
 			TestValue: "true",
@@ -85,9 +85,9 @@ func Test_parseTreeVisitor_VisitIsExpression(t *testing.T) {
 		result := mySqlParser.Expression().Accept(visitor)
 		assert.EqualValues(t, IsExpression{
 			predicateExpression: BinaryComparisonPredicate{
-				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 				ComparisonOperator: "!=",
-				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+				RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 			},
 			IsNot:     true,
 			TestValue: "FALSE",
@@ -101,9 +101,9 @@ func Test_parseTreeVisitor_VisitPredicateExpression(t *testing.T) {
 		mySqlParser, visitor := createMySqlParser("1!=1")
 		result := mySqlParser.Expression().Accept(visitor)
 		assert.EqualValues(t, BinaryComparisonPredicate{
-			LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			LeftPredicate:      ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 			ComparisonOperator: "!=",
-			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
+			RightPredicate:     ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
 		}, result)
 	})
 }
@@ -113,8 +113,8 @@ func Test_parseTreeVisitor_VisitExpressions(t *testing.T) {
 		mySqlParser, visitor := createMySqlParser("1,2")
 		result := mySqlParser.Expressions().Accept(visitor)
 		assert.EqualValues(t, []Expression{
-			ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "1"}}},
-			ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: "2"}}},
+			ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
+			ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}}},
 		}, result)
 	})
 }
