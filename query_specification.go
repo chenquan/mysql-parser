@@ -6,9 +6,10 @@ import (
 
 type (
 	QuerySpecification struct {
-		SelectSpecs    []string
-		SelectElements SelectElements
-		FromClause     *FromClause
+		SelectSpecs          []string
+		SelectElements       SelectElements
+		FromClause           *FromClause
+		SelectIntoExpression SelectIntoExpression
 	}
 )
 
@@ -31,9 +32,16 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		fromClause = &clause
 	}
 
+	var selectIntoExpression SelectIntoExpression
+	selectIntoExpressionContext := ctx.SelectIntoExpression()
+	if selectIntoExpressionContext != nil {
+		selectIntoExpression = selectIntoExpressionContext.Accept(v).(SelectIntoExpression)
+	}
+
 	return QuerySpecification{
-		SelectSpecs:    selectSpecs,
-		SelectElements: ctx.SelectElements().Accept(v).(SelectElements),
-		FromClause:     fromClause,
+		SelectSpecs:          selectSpecs,
+		SelectElements:       ctx.SelectElements().Accept(v).(SelectElements),
+		FromClause:           fromClause,
+		SelectIntoExpression: selectIntoExpression,
 	}
 }
