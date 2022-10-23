@@ -6,6 +6,7 @@ import (
 
 var (
 	_ ExpressionAtom = (*MathExpressionAtom)(nil)
+	_ ExpressionAtom = (*FunctionCallExpressionAtom)(nil)
 )
 
 type (
@@ -36,6 +37,9 @@ type (
 		SelectStatement SelectStatement
 	}
 )
+
+func (f FunctionCallExpressionAtom) IsExpressionAtom() {
+}
 
 func (n NestedExpressionAtom) IsExpressionAtom() {
 }
