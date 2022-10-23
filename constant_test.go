@@ -30,7 +30,7 @@ func Test_parseTreeVisitor_VisitConstant(t *testing.T) {
 	t.Run("ConstantString", func(t *testing.T) {
 		mySqlParser, visitor := createMySqlParser("'xxx'")
 		result := mySqlParser.Constant().Accept(visitor)
-		assert.EqualValues(t, ConstantString{Val: "'xxx'"}, result)
+		assert.EqualValues(t, ConstantString{Val: "xxx"}, result)
 	})
 
 	t.Run("ConstantBool", func(t *testing.T) {
