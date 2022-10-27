@@ -4,20 +4,17 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
-type (
-	QuerySpecification struct {
-		SelectSpecs          []string
-		SelectElements       SelectElements
-		FromClause           *FromClause
-		SelectIntoExpression SelectIntoExpression
-		GroupByClause        *GroupByClause
-		HavingClause         *HavingClause
-		OrderByClause        *OrderByClause
-		LimitClause          *LimitClause
-	}
-)
+type QuerySpecificationNointo struct {
+	SelectSpecs    []string
+	SelectElements SelectElements
+	FromClause     *FromClause
+	GroupByClause  *GroupByClause
+	HavingClause   *HavingClause
+	OrderByClause  *OrderByClause
+	LimitClause    *LimitClause
+}
 
-func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificationContext) interface{} {
+func (v *parseTreeVisitor) VisitQuerySpecificationNointo(ctx *parser.QuerySpecificationNointoContext) interface{} {
 	selectSpecContexts := ctx.AllSelectSpec()
 	var selectSpecs []string
 
@@ -34,12 +31,6 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 	if clauseCtx != nil {
 		clause := clauseCtx.Accept(v).(FromClause)
 		fromClause = &clause
-	}
-
-	var selectIntoExpression SelectIntoExpression
-	selectIntoExpressionContext := ctx.SelectIntoExpression()
-	if selectIntoExpressionContext != nil {
-		selectIntoExpression = selectIntoExpressionContext.Accept(v).(SelectIntoExpression)
 	}
 
 	var groupByClause *GroupByClause
@@ -70,14 +61,13 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		limitClause = &clause
 	}
 
-	return QuerySpecification{
-		SelectSpecs:          selectSpecs,
-		SelectElements:       ctx.SelectElements().Accept(v).(SelectElements),
-		FromClause:           fromClause,
-		SelectIntoExpression: selectIntoExpression,
-		GroupByClause:        groupByClause,
-		HavingClause:         havingClause,
-		OrderByClause:        orderByClause,
-		LimitClause:          limitClause,
+	return QuerySpecificationNointo{
+		SelectSpecs:    selectSpecs,
+		SelectElements: ctx.SelectElements().Accept(v).(SelectElements),
+		FromClause:     fromClause,
+		GroupByClause:  groupByClause,
+		HavingClause:   havingClause,
+		OrderByClause:  orderByClause,
+		LimitClause:    limitClause,
 	}
 }

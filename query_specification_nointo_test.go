@@ -6,11 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
+func Test_parseTreeVisitor_VisitQuerySpecificationNointo(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT * FROM U`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				All: true,
@@ -28,8 +28,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 
 	t.Run("2", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT count(*) as cnt FROM U`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				SelectElements: []SelectElement{
@@ -53,9 +53,9 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 	})
 
 	t.Run("3", func(t *testing.T) {
-		parser, visitor := createMySqlParser(`SELECT * FROM U INTO A,B,c`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		parser, visitor := createMySqlParser(`SELECT * FROM U`)
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				All: true,
@@ -67,24 +67,13 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 					},
 				},
 			},
-			SelectIntoExpression: SelectIntoVariables{AssignmentFields: []AssignmentField{
-				{
-					Val: "A",
-				},
-				{
-					Val: "B",
-				},
-				{
-					Val: "c",
-				},
-			}},
 		}, result)
 	})
 
 	t.Run("4", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT * FROM U group by a desc, c asc`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				All: true,
@@ -119,8 +108,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 
 	t.Run("5", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT name,avg(a) FROM U group by name having avg(a) > 1`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				SelectElements: []SelectElement{
@@ -170,8 +159,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 
 	t.Run("6", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT name FROM U order by a desc `)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				SelectElements: []SelectElement{
@@ -203,8 +192,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 
 	t.Run("7", func(t *testing.T) {
 		parser, visitor := createMySqlParser(`SELECT name FROM U LIMIT 2`)
-		result := parser.QuerySpecification().Accept(visitor)
-		assert.EqualValues(t, QuerySpecification{
+		result := parser.QuerySpecificationNointo().Accept(visitor)
+		assert.EqualValues(t, QuerySpecificationNointo{
 			SelectSpecs: nil,
 			SelectElements: SelectElements{
 				SelectElements: []SelectElement{
@@ -259,4 +248,5 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 			LimitClause: &LimitClause{Limit: 3, Offset: 2},
 		}, result)
 	})
+
 }
