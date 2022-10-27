@@ -17,6 +17,9 @@ type (
 	}
 )
 
+func (q QuerySpecification) IsQuerySpecification() {
+}
+
 func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificationContext) interface{} {
 	selectSpecContexts := ctx.AllSelectSpec()
 	var selectSpecs []string
@@ -62,6 +65,7 @@ func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificatio
 		clause := orderByClauseContext.Accept(v).(OrderByClause)
 		orderByClause = &clause
 	}
+
 	var limitClause *LimitClause
 	limitClauseContext := ctx.LimitClause()
 	if limitClauseContext != nil {

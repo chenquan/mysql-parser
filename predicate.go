@@ -40,20 +40,15 @@ type (
 )
 
 func (e ExpressionAtomPredicate) IsExpression() {
-
 }
 
 func (b BinaryComparisonPredicate) IsExpression() {
-
 }
 
 func (b BinaryComparisonPredicate) IsPredicate() {
-	//TODO implement me
-	panic("implement me")
 }
 
 func (i IsNullPredicate) IsExpression() {
-
 }
 
 func (i IsNullPredicate) IsPredicate() {
