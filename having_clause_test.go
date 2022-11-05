@@ -17,9 +17,9 @@ func Test_parseTreeVisitor_VisitHavingClause(t *testing.T) {
 						ExpressionAtom: FunctionCallExpressionAtom{FunctionCall: AggregateWindowedFunction{
 							Function:   "AVG",
 							Aggregator: "",
-							FunctionArg: &FunctionArg{F: FullColumnName{
+							FunctionArgs: []FunctionArg{{F: FullColumnName{
 								Uid: "A",
-							}},
+							}}},
 						}},
 					},
 					ComparisonOperator: ">",

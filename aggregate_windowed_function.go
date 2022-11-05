@@ -11,10 +11,10 @@ var (
 
 type (
 	AggregateWindowedFunction struct {
-		Function    string
-		StarArg     bool
-		Aggregator  string
-		FunctionArg *FunctionArg
+		Function     string
+		StarArg      bool
+		Aggregator   string
+		FunctionArgs []FunctionArg
 	}
 )
 
@@ -32,17 +32,26 @@ func (v *parseTreeVisitor) VisitAggregateWindowedFunction(ctx *parser.AggregateW
 		aggregator = aggregatorCtx.GetText()
 	}
 
-	var functionArg *FunctionArg
-	functionArgCtx := ctx.FunctionArg()
-	if functionArgCtx != nil {
-		arg := functionArgCtx.Accept(v).(FunctionArg)
-		functionArg = &arg
+	var functionArgs []FunctionArg
+	switch aggregator {
+	case "ALL", "":
+		functionArgCtx := ctx.FunctionArg()
+		if functionArgCtx != nil {
+			arg := functionArgCtx.Accept(v).(FunctionArg)
+			functionArgs = append(functionArgs, arg)
+		}
+	case "DISTINCT":
+		functionArgsCtx := ctx.FunctionArgs()
+		if functionArgsCtx != nil {
+			args := functionArgsCtx.Accept(v).([]FunctionArg)
+			functionArgs = append(functionArgs, args...)
+		}
 	}
 
 	return AggregateWindowedFunction{
-		Function:    function,
-		StarArg:     ctx.GetStarArg() != nil,
-		Aggregator:  aggregator,
-		FunctionArg: functionArg,
+		Function:     function,
+		StarArg:      ctx.GetStarArg() != nil,
+		Aggregator:   aggregator,
+		FunctionArgs: functionArgs,
 	}
 }

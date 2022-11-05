@@ -108,9 +108,9 @@ func TestParseTreeVisitor_VisitSelectElements(t *testing.T) {
 						Function:   "SUM",
 						StarArg:    false,
 						Aggregator: "",
-						FunctionArg: &FunctionArg{
+						FunctionArgs: []FunctionArg{FunctionArg{
 							F: FullColumnName{Uid: "a"},
-						},
+						}},
 					},
 					Alias: "c",
 				},
