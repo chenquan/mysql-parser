@@ -15,14 +15,14 @@ func Test_parseTreeVisitor_VisitFunctionArgs(t *testing.T) {
 			[]FunctionArg{
 				{
 					F: AggregateWindowedFunction{
-						Function:    "sum",
-						FunctionArg: &FunctionArg{F: FullColumnName{Uid: "a"}},
+						Function:     "sum",
+						FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{Uid: "a"}}},
 					},
 				},
 				{
 					F: AggregateWindowedFunction{
-						Function:    "avg",
-						FunctionArg: &FunctionArg{F: FullColumnName{Uid: "b"}},
+						Function:     "avg",
+						FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{Uid: "b"}}},
 					},
 				},
 			}, result)
@@ -38,8 +38,8 @@ func Test_parseTreeVisitor_VisitFunctionArg(t *testing.T) {
 		assert.EqualValues(t,
 			FunctionArg{
 				F: AggregateWindowedFunction{
-					Function:    "sum",
-					FunctionArg: &FunctionArg{F: FullColumnName{Uid: "a"}},
+					Function:     "sum",
+					FunctionArgs: []FunctionArg{{F: FullColumnName{Uid: "a"}}},
 				},
 			}, result)
 	})
