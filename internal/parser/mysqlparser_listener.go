@@ -1433,6 +1433,9 @@ type MySqlParserListener interface {
 	// EnterDecimalLiteral is called when entering the decimalLiteral production.
 	EnterDecimalLiteral(c *DecimalLiteralContext)
 
+	// EnterIntegerLiteral is called when entering the integerLiteral production.
+	EnterIntegerLiteral(c *IntegerLiteralContext)
+
 	// EnterFileSizeLiteral is called when entering the fileSizeLiteral production.
 	EnterFileSizeLiteral(c *FileSizeLiteralContext)
 
@@ -3202,6 +3205,9 @@ type MySqlParserListener interface {
 
 	// ExitDecimalLiteral is called when exiting the decimalLiteral production.
 	ExitDecimalLiteral(c *DecimalLiteralContext)
+
+	// ExitIntegerLiteral is called when exiting the integerLiteral production.
+	ExitIntegerLiteral(c *IntegerLiteralContext)
 
 	// ExitFileSizeLiteral is called when exiting the fileSizeLiteral production.
 	ExitFileSizeLiteral(c *FileSizeLiteralContext)

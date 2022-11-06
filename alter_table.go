@@ -30,7 +30,8 @@ type (
 	}
 
 	ColumnDefinition struct {
-		dataType string
+		DataType          string
+		ColumnConstraints []ColumnConstraint
 	}
 
 	TableAddIndex struct {
@@ -314,8 +315,4 @@ func (v *parseTreeVisitor) VisitAlterByRenameIndex(ctx *parser.AlterByRenameInde
 
 func (v *parseTreeVisitor) VisitAlterByRename(ctx *parser.AlterByRenameContext) interface{} {
 	return ctx.Uid().GetText()
-}
-
-func (v *parseTreeVisitor) VisitColumnDefinition(ctx *parser.ColumnDefinitionContext) interface{} {
-	return ColumnDefinition{dataType: ctx.DataType().GetText()}
 }

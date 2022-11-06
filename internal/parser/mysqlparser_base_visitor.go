@@ -1908,6 +1908,10 @@ func (v *BaseMySqlParserVisitor) VisitDecimalLiteral(ctx *DecimalLiteralContext)
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseMySqlParserVisitor) VisitIntegerLiteral(ctx *IntegerLiteralContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseMySqlParserVisitor) VisitFileSizeLiteral(ctx *FileSizeLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }

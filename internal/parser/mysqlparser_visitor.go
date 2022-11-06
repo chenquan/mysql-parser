@@ -1433,6 +1433,9 @@ type MySqlParserVisitor interface {
 	// Visit a parse tree produced by MySqlParser#decimalLiteral.
 	VisitDecimalLiteral(ctx *DecimalLiteralContext) interface{}
 
+	// Visit a parse tree produced by MySqlParser#integerLiteral.
+	VisitIntegerLiteral(ctx *IntegerLiteralContext) interface{}
+
 	// Visit a parse tree produced by MySqlParser#fileSizeLiteral.
 	VisitFileSizeLiteral(ctx *FileSizeLiteralContext) interface{}
 
