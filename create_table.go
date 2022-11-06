@@ -24,10 +24,11 @@ type (
 		CreateDefinitions []CreateDefinition
 	}
 	ColumnCreateTable struct {
-		IfNotExists bool
-		Replace     bool
-		Temporary   bool
-		Table       string
+		IfNotExists       bool
+		Replace           bool
+		Temporary         bool
+		Table             string
+		CreateDefinitions []CreateDefinition
 	}
 	CreateDefinition interface {
 		IsCreateDefinition()
@@ -41,10 +42,6 @@ type (
 		CreateDefinition
 	}
 
-	ColumnConstraint interface {
-		IsColumnConstraint()
-		CreateDefinition
-	}
 	PrimaryKeyTableConstraint struct {
 		Constraint bool
 		Name       string
@@ -146,5 +143,14 @@ func (v *parseTreeVisitor) VisitPrimaryKeyTableConstraint(ctx *parser.PrimaryKey
 }
 
 func (v *parseTreeVisitor) VisitColumnCreateTable(ctx *parser.ColumnCreateTableContext) interface{} {
-	return nil
+
+	ctx.CreateDefinitions()
+
+	return ColumnCreateTable{
+		IfNotExists:       ctx.IfNotExists() != nil,
+		Replace:           ctx.REPLACE() != nil,
+		Temporary:         ctx.TEMPORARY() != nil,
+		Table:             ctx.TableName().GetText(),
+		CreateDefinitions: ctx.CreateDefinitions().Accept(v).([]CreateDefinition),
+	}
 }

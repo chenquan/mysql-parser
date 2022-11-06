@@ -2139,6 +2139,10 @@ decimalLiteral
     : DECIMAL_LITERAL | ZERO_DECIMAL | ONE_DECIMAL | TWO_DECIMAL | REAL_LITERAL
     ;
 
+integerLiteral
+    : DECIMAL_LITERAL | ZERO_DECIMAL | ONE_DECIMAL | TWO_DECIMAL
+    ;
+
 fileSizeLiteral
     : FILESIZE_LITERAL | decimalLiteral;
 
@@ -2304,8 +2308,8 @@ currentTimestamp
     (
       (CURRENT_TIMESTAMP | LOCALTIME | LOCALTIMESTAMP
       | CURDATE | CURTIME) // MariaDB-specific
-      ('(' decimalLiteral? ')')?
-      | NOW '(' decimalLiteral? ')'
+      ('(' integerLiteral? ')')?
+      | NOW '(' integerLiteral? ')'
     )
     ;
 

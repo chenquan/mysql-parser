@@ -2965,6 +2965,12 @@ func (s *BaseMySqlParserListener) EnterDecimalLiteral(ctx *DecimalLiteralContext
 // ExitDecimalLiteral is called when production decimalLiteral is exited.
 func (s *BaseMySqlParserListener) ExitDecimalLiteral(ctx *DecimalLiteralContext) {}
 
+// EnterIntegerLiteral is called when production integerLiteral is entered.
+func (s *BaseMySqlParserListener) EnterIntegerLiteral(ctx *IntegerLiteralContext) {}
+
+// ExitIntegerLiteral is called when production integerLiteral is exited.
+func (s *BaseMySqlParserListener) ExitIntegerLiteral(ctx *IntegerLiteralContext) {}
+
 // EnterFileSizeLiteral is called when production fileSizeLiteral is entered.
 func (s *BaseMySqlParserListener) EnterFileSizeLiteral(ctx *FileSizeLiteralContext) {}
 

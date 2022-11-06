@@ -81,56 +81,6 @@ func (v *parseTreeVisitor) VisitAlterUpgradeName(ctx *parser.AlterUpgradeNameCon
 	return nil
 }
 
-func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) interface{} {
-	createTableContext := ctx.CreateTable()
-	if createTableContext != nil {
-		switch create := createTableContext.(type) {
-		case *parser.CopyCreateTableContext:
-			createTable := create.Accept(v).(CopyCreateTable)
-			v.CreatTables = append(v.CreatTables, createTable)
-		case *parser.QueryCreateTableContext:
-			createTable := create.Accept(v).(QueryCreateTable)
-			v.CreatTables = append(v.CreatTables, createTable)
-		case *parser.ColumnCreateTableContext:
-			createTable := create.Accept(v).(ColumnCreateTable)
-			v.CreatTables = append(v.CreatTables, createTable)
-		}
-
-		return nil
-	}
-
-	createDatabaseContext := ctx.CreateDatabase()
-	if createDatabaseContext != nil {
-		// TODO CreateDatabase
-		createDatabaseContext.Accept(v)
-		return nil
-	}
-
-	dropDatabaseContext := ctx.DropDatabase()
-	if dropDatabaseContext != nil {
-		v.DropDatabaseNames = append(v.DropDatabaseNames, dropDatabaseContext.Accept(v).(string))
-		return nil
-	}
-
-	alterDatabaseContext := ctx.AlterDatabase()
-	if alterDatabaseContext != nil {
-		switch alter := alterDatabaseContext.(type) {
-		case *parser.AlterSimpleDatabaseContext, *parser.AlterUpgradeNameContext:
-			// TODO AlterDatabase
-			alter.Accept(v)
-		}
-		return nil
-	}
-
-	alterTableContext := ctx.AlterTable()
-	if alterTableContext != nil {
-		v.AlterTables = append(v.AlterTables, alterTableContext.Accept(v).(AlterTable))
-		return nil
-	}
-
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
 
 	return nil

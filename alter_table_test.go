@@ -63,7 +63,7 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 				ModifyColumns: []TableModifyColumn{{
 					ifExists:         false,
 					column:           "user_name",
-					columnDefinition: ColumnDefinition{dataType: "varchar(100)"},
+					columnDefinition: ColumnDefinition{DataType: "varchar(100)"},
 				}},
 			},
 		},
