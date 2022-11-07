@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,16 +27,24 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 }
 
 func TestParser_AlterTablePrimaryKey(t *testing.T) {
-	//result := Parser("ALTER TABLE Persons\n ADD PRIMARY KEY USING HASH (user_name);")
 	result := Parser("ALTER TABLE Persons\n ADD PRIMARY KEY  (user_name) USING HASH;")
-	fmt.Println(result)
+	assert.EqualValues(t, []SqlStatement{AlterTable{
+		tableName:    "Persons",
+		AddColumns:   nil,
+		DeleteColumn: nil,
+		AddPrimaryKeys: []TableAddPrimaryKey{
+			{
+				index:     "",
+				indexType: "HASH",
+				columns:   []string{"user_name"},
+			},
+		},
+	}}, result)
 }
 
 func TestParser_AlterTableUniqueKey(t *testing.T) {
-	//result := Parser("ALTER TABLE Persons\n ADD PRIMARY KEY USING HASH (user_name);")
 	result := Parser("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
 	assert.EqualValues(t,
-		result,
 		[]SqlStatement{
 			AlterTable{
 				tableName:    "PERSONS",
@@ -50,13 +57,13 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 				}},
 			},
 		},
+		result,
 	)
 }
 
 func TestParser_AlterTableModifyColumn(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n MODIFY COLUMN user_name varchar(100);")
 	assert.EqualValues(t,
-		result,
 		[]SqlStatement{
 			AlterTable{
 				tableName:    "PERSONS",
@@ -69,13 +76,13 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 				}},
 			},
 		},
+		result,
 	)
 }
 
 func TestParser_AlterTableDropColumn(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name;")
 	assert.EqualValues(t,
-		result,
 		[]SqlStatement{
 			AlterTable{
 				tableName:    "PERSONS",
@@ -88,12 +95,12 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				}},
 			},
 		},
+		result,
 	)
 
 	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name RESTRICT;")
 	assert.EqualValues(
 		t,
-		result,
 		[]SqlStatement{
 			AlterTable{
 				tableName:    "PERSONS",
@@ -106,11 +113,11 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				}},
 			},
 		},
+		result,
 	)
 
 	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN IF EXISTS user_name RESTRICT;")
 	assert.EqualValues(t,
-		result,
 		[]SqlStatement{
 			AlterTable{
 				tableName:    "PERSONS",
@@ -123,6 +130,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				}},
 			},
 		},
+		result,
 	)
 }
 
