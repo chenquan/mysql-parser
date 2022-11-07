@@ -71,6 +71,12 @@ type (
 	}
 )
 
+func (a AlterTable) IsSqlStatement() {
+}
+
+func (a AlterTable) IsDdlStatement() {
+}
+
 func (v *parseTreeVisitor) VisitAlterTable(ctx *parser.AlterTableContext) interface{} {
 	table := AlterTable{
 		tableName: ctx.TableName().GetText(),

@@ -10,18 +10,20 @@ import (
 func TestParser_AlterTableAddIndex(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n ADD INDEX user_name_index (user_name);")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName:    "PERSONS",
-			AddColumns:   nil,
-			DeleteColumn: nil,
-			AddIndexes: []TableAddIndex{{
-				ifNotExists: false,
-				indexName:   "user_name_index",
-				indexType:   "",
-				columns:     []string{"user_name"},
-			}},
-		}},
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName:    "PERSONS",
+				AddColumns:   nil,
+				DeleteColumn: nil,
+				AddIndexes: []TableAddIndex{{
+					ifNotExists: false,
+					indexName:   "user_name_index",
+					indexType:   "",
+					columns:     []string{"user_name"},
+				}},
+			},
+		},
 	)
 }
 
@@ -35,9 +37,9 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 	//result := Parser("ALTER TABLE Persons\n ADD PRIMARY KEY USING HASH (user_name);")
 	result := Parser("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{
-			{
+		result,
+		[]SqlStatement{
+			AlterTable{
 				tableName:    "PERSONS",
 				AddColumns:   nil,
 				DeleteColumn: nil,
@@ -54,9 +56,9 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 func TestParser_AlterTableModifyColumn(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n MODIFY COLUMN user_name varchar(100);")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{
-			{
+		result,
+		[]SqlStatement{
+			AlterTable{
 				tableName:    "PERSONS",
 				AddColumns:   nil,
 				DeleteColumn: nil,
@@ -73,9 +75,9 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 func TestParser_AlterTableDropColumn(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name;")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{
-			{
+		result,
+		[]SqlStatement{
+			AlterTable{
 				tableName:    "PERSONS",
 				AddColumns:   nil,
 				DeleteColumn: nil,
@@ -91,9 +93,9 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name RESTRICT;")
 	assert.EqualValues(
 		t,
-		result.AlterTables,
-		[]AlterTable{
-			{
+		result,
+		[]SqlStatement{
+			AlterTable{
 				tableName:    "PERSONS",
 				AddColumns:   nil,
 				DeleteColumn: nil,
@@ -108,9 +110,9 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 
 	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN IF EXISTS user_name RESTRICT;")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{
-			{
+		result,
+		[]SqlStatement{
+			AlterTable{
 				tableName:    "PERSONS",
 				AddColumns:   nil,
 				DeleteColumn: nil,
@@ -127,67 +129,77 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 func TestParser_AlterTableDropPrimaryKey(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n DROP PRIMARY KEY;")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName:      "PERSONS",
-			DropPrimaryKey: true,
-		}},
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName:      "PERSONS",
+				DropPrimaryKey: true,
+			},
+		},
 	)
 }
 
 func TestParser_AlterTableRenameIndex(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n RENAME INDEX A TO B;")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName: "PERSONS",
-			RenameIndexes: []TableRenameIndex{
-				{
-					FromColumn: "A",
-					ToColumn:   "B",
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName: "PERSONS",
+				RenameIndexes: []TableRenameIndex{
+					{
+						FromColumn: "A",
+						ToColumn:   "B",
+					},
 				},
 			},
-		}},
+		},
 	)
 }
 
 func TestParser_AlterTableDropIndex(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n DROP INDEX U")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName: "PERSONS",
-			DropIndexes: []TableDropIndex{
-				{
-					ifExists: false,
-					column:   "U",
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName: "PERSONS",
+				DropIndexes: []TableDropIndex{
+					{
+						ifExists: false,
+						column:   "U",
+					},
 				},
 			},
-		}},
+		},
 	)
 
 	result = Parser("ALTER TABLE PERSONS\n DROP INDEX IF EXISTS U")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName: "PERSONS",
-			DropIndexes: []TableDropIndex{
-				{
-					ifExists: true,
-					column:   "U",
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName: "PERSONS",
+				DropIndexes: []TableDropIndex{
+					{
+						ifExists: true,
+						column:   "U",
+					},
 				},
 			},
-		}},
+		},
 	)
 }
 
 func TestParser_AlterTableRename(t *testing.T) {
 	result := Parser("ALTER TABLE PERSONS\n RENAME A")
 	assert.EqualValues(t,
-		result.AlterTables,
-		[]AlterTable{{
-			tableName: "PERSONS",
-			Renames:   []string{"A"},
-		}},
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName: "PERSONS",
+				Renames:   []string{"A"},
+			},
+		},
 	)
 }

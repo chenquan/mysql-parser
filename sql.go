@@ -5,7 +5,7 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
-func Parser(sql string) *Result {
+func Parser(sql string) interface{} {
 	if sql == "" {
 		return nil
 	}
@@ -19,6 +19,6 @@ func Parser(sql string) *Result {
 		Result: &Result{},
 	}
 
-	mysqlParser.Root().Accept(visitor)
-	return visitor.Result
+	accept := mysqlParser.Root().Accept(visitor)
+	return accept
 }

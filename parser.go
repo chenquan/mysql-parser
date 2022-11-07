@@ -37,30 +37,6 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 	return nil
 }
 
-// VisitSqlStatements visits a parse tree produced by MySqlParser#sqlStatements.
-func (v *parseTreeVisitor) VisitSqlStatements(ctx *parser.SqlStatementsContext) interface{} {
-	for _, e := range ctx.AllSqlStatement() {
-		_ = e.Accept(v)
-	}
-
-	return nil
-}
-
-// VisitSqlStatement visits a parse tree produced by MySqlParser#sqlStatement.
-func (v *parseTreeVisitor) VisitSqlStatement(ctx *parser.SqlStatementContext) interface{} {
-	ddlStatement := ctx.DdlStatement()
-	if ddlStatement != nil {
-		return ddlStatement.Accept(v)
-	}
-
-	dmlStatement := ctx.DmlStatement()
-	if dmlStatement != nil {
-		return dmlStatement.Accept(v)
-	}
-
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitCreateDatabase(ctx *parser.CreateDatabaseContext) interface{} {
 	// TODO CreateDatabase
 
@@ -98,8 +74,7 @@ func (v *parseTreeVisitor) VisitPartitionDefinitions(ctx *parser.PartitionDefini
 func (v *parseTreeVisitor) VisitDmlStatement(ctx *parser.DmlStatementContext) interface{} {
 	selectStatementContext := ctx.SelectStatement()
 	if selectStatementContext != nil {
-		v.SelectStatements = append(v.SelectStatements, selectStatementContext.Accept(v).(SelectStatement))
-		return nil
+		return selectStatementContext.Accept(v).(SelectStatement)
 	}
 
 	return nil

@@ -19,8 +19,18 @@ func Test_parseTreeVisitor_VisitDdlStatement(t *testing.T) {
 				Table:       "A",
 				CreateDefinitions: []CreateDefinition{
 					ColumnDeclaration{
-						Column:           "a",
-						ColumnDefinition: ColumnDefinition{DataType: "int"},
+						Column: "a",
+						ColumnDefinition: ColumnDefinition{
+							DataType: "int",
+							ColumnConstraints: []ColumnConstraint{
+								DefaultColumnConstraint{
+									DefaultValue: DefaultValueConstant{
+										UnaryOperator: "",
+										Constant:      ConstantDecimal{Val: 1},
+									},
+								},
+							},
+						},
 					},
 				},
 			}, result)

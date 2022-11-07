@@ -12,14 +12,14 @@ func Test_parseTreeVisitor_VisitFromClause(t *testing.T) {
 		result := mySqlParser.FromClause().Accept(visitor)
 
 		assert.EqualValues(t,
-			FromClause{TableSources: &TableSources{TableSources: []TableSource{
+			FromClause{TableSources: []TableSource{
 				TableSourceBase{
 					TableSourceItem: AtomTableItem{
 						TableName: "a",
 						Alias:     "b",
 					},
 				},
-			}}}, result)
+			}}, result)
 
 	})
 }

@@ -10,7 +10,7 @@ type (
 		CreateDefinition
 	}
 	DefaultColumnConstraint struct {
-		Default interface{}
+		DefaultValue DefaultValue
 	}
 )
 
@@ -37,7 +37,8 @@ func (v *parseTreeVisitor) VisitColumnDefinition(ctx *parser.ColumnDefinitionCon
 }
 
 func (v *parseTreeVisitor) VisitDefaultColumnConstraint(ctx *parser.DefaultColumnConstraintContext) interface{} {
-	//defaultValue := ctx.DefaultValue().Accept(v)
 
-	return nil
+	return DefaultColumnConstraint{
+		DefaultValue: ctx.DefaultValue().Accept(v).(DefaultValue),
+	}
 }

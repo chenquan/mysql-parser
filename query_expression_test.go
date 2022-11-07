@@ -18,10 +18,8 @@ func Test_parseTreeVisitor_VisitQueryExpression(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			OrderByClause: &OrderByClause{

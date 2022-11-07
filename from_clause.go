@@ -5,16 +5,14 @@ import (
 )
 
 type FromClause struct {
-	TableSources *TableSources
+	TableSources []TableSource
 }
 
 func (v *parseTreeVisitor) VisitFromClause(ctx *parser.FromClauseContext) interface{} {
-	var tableSources *TableSources
 	tableSourcesCtx := ctx.TableSources()
 	if tableSourcesCtx != nil {
-		sources := tableSourcesCtx.Accept(v).(TableSources)
-		tableSources = &sources
+		return FromClause{TableSources: tableSourcesCtx.Accept(v).([]TableSource)}
 	}
 
-	return FromClause{TableSources: tableSources}
+	return nil
 }

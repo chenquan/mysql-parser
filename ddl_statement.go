@@ -26,15 +26,14 @@ func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) in
 		switch alter := alterDatabaseContext.(type) {
 		case *parser.AlterSimpleDatabaseContext, *parser.AlterUpgradeNameContext:
 			// TODO AlterDatabase
-			alter.Accept(v)
+			return alter.Accept(v)
 		}
 		return nil
 	}
 
 	alterTableContext := ctx.AlterTable()
 	if alterTableContext != nil {
-		v.AlterTables = append(v.AlterTables, alterTableContext.Accept(v).(AlterTable))
-		return nil
+		return alterTableContext.Accept(v).(AlterTable)
 	}
 
 	return nil
