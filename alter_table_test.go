@@ -7,7 +7,7 @@ import (
 )
 
 func TestParser_AlterTableAddIndex(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n ADD INDEX user_name_index (user_name);")
+	result := Parser("ALTER TABLE PERSONS\n ADD INDEX user_name_index using HASH (user_name);")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -18,7 +18,7 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 				AddIndexes: []TableAddIndex{{
 					ifNotExists: false,
 					indexName:   "user_name_index",
-					indexType:   "",
+					indexType:   "HASH",
 					columns:     []string{"user_name"},
 				}},
 			},
@@ -207,6 +207,61 @@ func TestParser_AlterTableRename(t *testing.T) {
 			AlterTable{
 				tableName: "PERSONS",
 				Renames:   []string{"A"},
+			},
+		},
+	)
+}
+
+func Test_parseTreeVisitor_VisitAlterByAddColumn(t *testing.T) {
+	result := Parser("ALTER TABLE PERSONS\n ADD column a int;")
+	assert.EqualValues(t,
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName:    "PERSONS",
+				DeleteColumn: nil,
+
+				AddColumns: []TableAddColumn{
+					{
+						ifNotExists: false,
+						column:      "a",
+						columnDefinition: ColumnDefinition{
+							DataType:          "int",
+							ColumnConstraints: nil,
+						},
+					},
+				},
+			},
+		},
+	)
+}
+
+func Test_parseTreeVisitor_VisitAlterByAddColumns(t *testing.T) {
+	result := Parser("ALTER TABLE PERSONS\n ADD column (a int, b int);")
+	assert.EqualValues(t,
+		result,
+		[]SqlStatement{
+			AlterTable{
+				tableName:    "PERSONS",
+				DeleteColumn: nil,
+				AddColumns: []TableAddColumn{
+					{
+						ifNotExists: false,
+						column:      "a",
+						columnDefinition: ColumnDefinition{
+							DataType:          "int",
+							ColumnConstraints: nil,
+						},
+					},
+					{
+						ifNotExists: false,
+						column:      "b",
+						columnDefinition: ColumnDefinition{
+							DataType:          "int",
+							ColumnConstraints: nil,
+						},
+					},
+				},
 			},
 		},
 	)

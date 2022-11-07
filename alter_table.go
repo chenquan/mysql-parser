@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
@@ -114,11 +113,10 @@ func (v *parseTreeVisitor) VisitAlterTable(ctx *parser.AlterTableContext) interf
 
 func (v *parseTreeVisitor) VisitAlterByAddColumn(ctx *parser.AlterByAddColumnContext) interface{} {
 	allUid := ctx.AllUid()
-	ctx.IsAlterSpecificationContext()
 	if len(allUid) != 0 {
 		acceptColumnDefinition := ctx.ColumnDefinition().Accept(v)
 		return TableAddColumn{
-			ifNotExists:      !ctx.IfNotExists().IsEmpty(),
+			ifNotExists:      ctx.IfNotExists() != nil,
 			column:           allUid[0].GetText(),
 			columnDefinition: acceptColumnDefinition.(ColumnDefinition),
 		}
@@ -138,7 +136,7 @@ func (v *parseTreeVisitor) VisitAlterByAddColumns(ctx *parser.AlterByAddColumnsC
 			acceptColumnDefinition := definition.Accept(v)
 
 			addColumns[i] = TableAddColumn{
-				ifNotExists:      !ctx.IfNotExists().IsEmpty(),
+				ifNotExists:      ctx.IfNotExists() != nil,
 				column:           uid.GetText(),
 				columnDefinition: acceptColumnDefinition.(ColumnDefinition),
 			}
@@ -159,7 +157,7 @@ func (v *parseTreeVisitor) VisitAlterByAddIndex(ctx *parser.AlterByAddIndexConte
 	var indexType string
 	indexTypeContext := ctx.IndexType()
 	if indexTypeContext != nil {
-		indexType = indexTypeContext.GetText()
+		indexType = indexTypeContext.Accept(v).(string)
 	}
 
 	var columns []string
@@ -229,17 +227,7 @@ func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrima
 }
 
 func (v *parseTreeVisitor) VisitIndexType(ctx *parser.IndexTypeContext) interface{} {
-	indexType := ctx.GetChild(1)
-	if indexType == nil {
-		return ""
-	}
-
-	switch val := indexType.(type) {
-	case *antlr.TerminalNodeImpl:
-		return val.GetText()
-	}
-
-	return ""
+	return ctx.GetChild(1).(interface{ GetText() string }).GetText()
 }
 
 func (v *parseTreeVisitor) VisitIndexOption(ctx *parser.IndexOptionContext) interface{} {

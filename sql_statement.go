@@ -12,9 +12,12 @@ type (
 		SqlStatement
 		IsDdlStatement()
 	}
+	DmlStatement interface {
+		SqlStatement
+		IsDmlStatement()
+	}
 )
 
-// VisitSqlStatements visits a parse tree produced by MySqlParser#sqlStatements.
 func (v *parseTreeVisitor) VisitSqlStatements(ctx *parser.SqlStatementsContext) interface{} {
 	allSqlStatement := ctx.AllSqlStatement()
 	sqlStatements := make([]SqlStatement, 0, len(allSqlStatement))
