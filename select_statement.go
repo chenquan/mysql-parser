@@ -4,8 +4,13 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var (
+	_ SelectStatement = (*SimpleSelect)(nil)
+)
+
 type (
 	SelectStatement interface {
+		DmlStatement
 		IsSelectStatement()
 	}
 	SimpleSelect struct {
@@ -15,6 +20,12 @@ type (
 		QueryExpression QueryExpression
 	}
 )
+
+func (s SimpleSelect) IsSqlStatement() {
+}
+
+func (s SimpleSelect) IsDmlStatement() {
+}
 
 func (s SimpleSelect) IsSelectStatement() {
 }
