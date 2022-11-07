@@ -20,7 +20,7 @@ type (
 		SelectStatement SelectStatement
 	}
 	TableSourcesItem struct {
-		TableSources TableSources
+		TableSources []TableSource
 	}
 )
 
@@ -45,5 +45,5 @@ func (v *parseTreeVisitor) VisitSubqueryTableItem(ctx *parser.SubqueryTableItemC
 }
 
 func (v *parseTreeVisitor) VisitTableSourcesItem(ctx *parser.TableSourcesItemContext) interface{} {
-	return TableSourcesItem{TableSources: ctx.TableSources().Accept(v).(TableSources)}
+	return TableSourcesItem{TableSources: ctx.TableSources().Accept(v).([]TableSource)}
 }

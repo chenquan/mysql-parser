@@ -16,10 +16,8 @@ func Test_parseTreeVisitor_VisitSimpleSelect(t *testing.T) {
 				All: true,
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 		}}, result)
@@ -42,10 +40,8 @@ func Test_parseTreeVisitor_VisitSimpleSelect(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 		}}, result)

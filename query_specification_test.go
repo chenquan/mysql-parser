@@ -16,10 +16,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				All: true,
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 		}, result)
@@ -43,10 +41,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 		}, result)
@@ -61,10 +57,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				All: true,
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			SelectIntoExpression: SelectIntoVariables{AssignmentFields: []AssignmentField{
@@ -90,10 +84,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				All: true,
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			GroupByClause: &GroupByClause{GroupByItems: []GroupByItem{
@@ -134,10 +126,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			GroupByClause: &GroupByClause{
@@ -179,10 +169,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			OrderByClause: &OrderByClause{
@@ -212,10 +200,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			LimitClause: &LimitClause{Limit: 2},
@@ -231,10 +217,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			LimitClause: &LimitClause{Limit: 3, Offset: 2},
@@ -250,10 +234,8 @@ func Test_parseTreeVisitor_VisitQuerySpecification(t *testing.T) {
 				},
 			},
 			FromClause: &FromClause{
-				TableSources: &TableSources{
-					TableSources: []TableSource{
-						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
-					},
+				TableSources: []TableSource{
+					TableSourceBase{TableSourceItem: AtomTableItem{TableName: "U"}},
 				},
 			},
 			LimitClause: &LimitClause{Limit: 3, Offset: 2},

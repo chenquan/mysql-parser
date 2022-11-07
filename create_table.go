@@ -4,9 +4,15 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var (
+	_ CreatTable = (*CopyCreateTable)(nil)
+	_ CreatTable = (*QueryCreateTable)(nil)
+	_ CreatTable = (*ColumnCreateTable)(nil)
+)
+
 type (
 	CreatTable interface {
-		TableName() string
+		IsCreatTable()
 	}
 
 	CopyCreateTable struct {
@@ -49,6 +55,9 @@ type (
 	}
 )
 
+func (c CopyCreateTable) IsSqlStatement() {
+}
+
 func (p PrimaryKeyTableConstraint) IsColumnConstraint() {
 }
 
@@ -57,16 +66,13 @@ func (p PrimaryKeyTableConstraint) IsCreateDefinition() {
 
 func (c ColumnDeclaration) IsCreateDefinition() {}
 
-func (c ColumnCreateTable) TableName() string {
-	return c.Table
+func (c ColumnCreateTable) IsCreatTable() {
 }
 
-func (q QueryCreateTable) TableName() string {
-	return q.Table
+func (q QueryCreateTable) IsCreatTable() {
 }
 
-func (c CopyCreateTable) TableName() string {
-	return c.ToTableName
+func (c CopyCreateTable) IsCreatTable() {
 }
 
 func (v *parseTreeVisitor) VisitCopyCreateTable(ctx *parser.CopyCreateTableContext) interface{} {

@@ -137,9 +137,9 @@ func Test_parseTreeVisitor_VisitExistsExpressionAtom(t *testing.T) {
 							}},
 						},
 					},
-					FromClause: &FromClause{TableSources: &TableSources{TableSources: []TableSource{
+					FromClause: &FromClause{TableSources: []TableSource{
 						TableSourceBase{TableSourceItem: AtomTableItem{TableName: "u"}},
-					}}},
+					}},
 				}},
 			},
 			result)
