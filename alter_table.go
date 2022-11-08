@@ -23,9 +23,9 @@ type (
 	IndexType string
 
 	TableAddColumn struct {
-		ifNotExists      bool
-		column           string
-		columnDefinition ColumnDefinition
+		IfNotExists      bool
+		Column           string
+		ColumnDefinition ColumnDefinition
 	}
 
 	ColumnDefinition struct {
@@ -34,35 +34,35 @@ type (
 	}
 
 	TableAddIndex struct {
-		ifNotExists bool
-		indexName   string
-		indexType   string
-		columns     []string
+		IfNotExists bool
+		IndexName   string
+		IndexType   string
+		Columns     []IndexColumnName
 	}
 	TableAddPrimaryKey struct {
-		index     string
-		indexType string
-		columns   []string
+		Index     string
+		IndexType string
+		Columns   []IndexColumnName
 	}
 
 	TableAddUniqueKey struct {
-		indexName string
-		indexType string
-		columns   []string
+		IndexName string
+		IndexType string
+		Columns   []IndexColumnName
 	}
 	TableModifyColumn struct {
-		ifExists         bool
-		column           string
-		columnDefinition ColumnDefinition
+		IfExists         bool
+		Column           string
+		ColumnDefinition ColumnDefinition
 	}
 	TableDropColumn struct {
-		ifExists bool
-		column   string
-		restrict bool
+		IfExists bool
+		Column   string
+		Restrict bool
 	}
 	TableDropIndex struct {
-		ifExists bool
-		column   string
+		IfExists bool
+		Column   string
 	}
 	TableRenameIndex struct {
 		FromColumn string
@@ -116,9 +116,9 @@ func (v *parseTreeVisitor) VisitAlterByAddColumn(ctx *parser.AlterByAddColumnCon
 	if len(allUid) != 0 {
 		acceptColumnDefinition := ctx.ColumnDefinition().Accept(v)
 		return TableAddColumn{
-			ifNotExists:      ctx.IfNotExists() != nil,
-			column:           allUid[0].GetText(),
-			columnDefinition: acceptColumnDefinition.(ColumnDefinition),
+			IfNotExists:      ctx.IfNotExists() != nil,
+			Column:           allUid[0].GetText(),
+			ColumnDefinition: acceptColumnDefinition.(ColumnDefinition),
 		}
 	}
 
@@ -136,9 +136,9 @@ func (v *parseTreeVisitor) VisitAlterByAddColumns(ctx *parser.AlterByAddColumnsC
 			acceptColumnDefinition := definition.Accept(v)
 
 			addColumns[i] = TableAddColumn{
-				ifNotExists:      ctx.IfNotExists() != nil,
-				column:           uid.GetText(),
-				columnDefinition: acceptColumnDefinition.(ColumnDefinition),
+				IfNotExists:      ctx.IfNotExists() != nil,
+				Column:           uid.GetText(),
+				ColumnDefinition: acceptColumnDefinition.(ColumnDefinition),
 			}
 		}
 		return addColumns
@@ -160,31 +160,21 @@ func (v *parseTreeVisitor) VisitAlterByAddIndex(ctx *parser.AlterByAddIndexConte
 		indexType = indexTypeContext.Accept(v).(string)
 	}
 
-	var columns []string
+	var columns []IndexColumnName
 	indexColumnNamesContext := ctx.IndexColumnNames()
 	if indexColumnNamesContext != nil {
 		indexColumnNamesValue := indexColumnNamesContext.Accept(v)
 		if indexColumnNamesValue != nil {
-			columns = indexColumnNamesValue.([]string)
+			columns = indexColumnNamesValue.([]IndexColumnName)
 		}
 	}
 
 	return TableAddIndex{
-		ifNotExists: ctx.IfNotExists() != nil,
-		indexName:   indexName,
-		indexType:   indexType,
-		columns:     columns,
+		IfNotExists: ctx.IfNotExists() != nil,
+		IndexName:   indexName,
+		IndexType:   indexType,
+		Columns:     columns,
 	}
-}
-
-func (v *parseTreeVisitor) VisitIndexColumnNames(ctx *parser.IndexColumnNamesContext) interface{} {
-	allIndexColumnName := ctx.AllIndexColumnName()
-	var indexColumnNames []string
-	for _, indexColumnNameContext := range allIndexColumnName {
-		indexColumnNames = append(indexColumnNames, indexColumnNameContext.GetText())
-	}
-
-	return indexColumnNames
 }
 
 func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrimaryKeyContext) interface{} {
@@ -200,12 +190,12 @@ func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrima
 		indexType = indexTypeContext.Accept(v).(string)
 	}
 
-	var columns []string
+	var columns []IndexColumnName
 	indexColumnNamesContext := ctx.IndexColumnNames()
 	if indexColumnNamesContext != nil {
 		indexColumnNamesValue := indexColumnNamesContext.Accept(v)
 		if indexColumnNamesValue != nil {
-			columns = indexColumnNamesValue.([]string)
+			columns = indexColumnNamesValue.([]IndexColumnName)
 		}
 	}
 	allIndexOption := ctx.AllIndexOption()
@@ -220,9 +210,9 @@ func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrima
 	}
 
 	return TableAddPrimaryKey{
-		index:     index,
-		indexType: indexType,
-		columns:   columns,
+		Index:     index,
+		IndexType: indexType,
+		Columns:   columns,
 	}
 }
 
@@ -251,10 +241,10 @@ func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUnique
 		indexType = indexTypeContext.Accept(v).(string)
 	}
 
-	var indexColumnNames []string
+	var indexColumnNames []IndexColumnName
 	indexColumnNamesContext := ctx.IndexColumnNames()
 	if indexColumnNamesContext != nil {
-		indexColumnNames = indexColumnNamesContext.Accept(v).([]string)
+		indexColumnNames = indexColumnNamesContext.Accept(v).([]IndexColumnName)
 	}
 
 	allIndexOption := ctx.AllIndexOption()
@@ -271,32 +261,32 @@ func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUnique
 	}
 
 	return TableAddUniqueKey{
-		indexName: indexName,
-		indexType: indexType,
-		columns:   indexColumnNames,
+		IndexName: indexName,
+		IndexType: indexType,
+		Columns:   indexColumnNames,
 	}
 }
 
 func (v *parseTreeVisitor) VisitAlterByModifyColumn(ctx *parser.AlterByModifyColumnContext) interface{} {
 	return TableModifyColumn{
-		ifExists:         ctx.IfExists() != nil,
-		column:           ctx.Uid(0).GetText(),
-		columnDefinition: ctx.ColumnDefinition().Accept(v).(ColumnDefinition),
+		IfExists:         ctx.IfExists() != nil,
+		Column:           ctx.Uid(0).GetText(),
+		ColumnDefinition: ctx.ColumnDefinition().Accept(v).(ColumnDefinition),
 	}
 }
 
 func (v *parseTreeVisitor) VisitAlterByDropColumn(ctx *parser.AlterByDropColumnContext) interface{} {
 	return TableDropColumn{
-		ifExists: ctx.IfExists() != nil,
-		column:   ctx.Uid().GetText(),
-		restrict: ctx.RESTRICT() != nil,
+		IfExists: ctx.IfExists() != nil,
+		Column:   ctx.Uid().GetText(),
+		Restrict: ctx.RESTRICT() != nil,
 	}
 }
 
 func (v *parseTreeVisitor) VisitAlterByDropIndex(ctx *parser.AlterByDropIndexContext) interface{} {
 	return TableDropIndex{
-		ifExists: ctx.IfExists() != nil,
-		column:   ctx.Uid().GetText(),
+		IfExists: ctx.IfExists() != nil,
+		Column:   ctx.Uid().GetText(),
 	}
 }
 

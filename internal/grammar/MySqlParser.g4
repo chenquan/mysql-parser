@@ -2054,7 +2054,7 @@ fullColumnName
     ;
 
 indexColumnName
-    : ((uid | STRING_LITERAL) ('(' decimalLiteral ')')? | expression) sortType=(ASC | DESC)?
+    : (uid | STRING_LITERAL) ('(' integerLiteral ')')? sortType=(ASC | DESC)?
     ;
 
 userName
