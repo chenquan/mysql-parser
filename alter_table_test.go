@@ -16,10 +16,16 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				AddIndexes: []TableAddIndex{{
-					ifNotExists: false,
-					indexName:   "user_name_index",
-					indexType:   "HASH",
-					columns:     []string{"user_name"},
+					IfNotExists: false,
+					IndexName:   "user_name_index",
+					IndexType:   "HASH",
+					Columns: []IndexColumnName{
+						{
+							IndexColumnName:   "user_name",
+							IndexColumnLength: 0,
+							SortType:          "",
+						},
+					},
 				}},
 			},
 		},
@@ -34,9 +40,15 @@ func TestParser_AlterTablePrimaryKey(t *testing.T) {
 		DeleteColumn: nil,
 		AddPrimaryKeys: []TableAddPrimaryKey{
 			{
-				index:     "",
-				indexType: "HASH",
-				columns:   []string{"user_name"},
+				Index:     "",
+				IndexType: "HASH",
+				Columns: []IndexColumnName{
+					{
+						IndexColumnName:   "user_name",
+						IndexColumnLength: 0,
+						SortType:          "",
+					},
+				},
 			},
 		},
 	}}, result)
@@ -51,9 +63,15 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				AddUniqueKeys: []TableAddUniqueKey{{
-					indexName: "user_name_index",
-					indexType: "",
-					columns:   []string{"user_name"},
+					IndexName: "user_name_index",
+					IndexType: "",
+					Columns: []IndexColumnName{
+						{
+							IndexColumnName:   "user_name",
+							IndexColumnLength: 0,
+							SortType:          "",
+						},
+					},
 				}},
 			},
 		},
@@ -70,9 +88,9 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				ModifyColumns: []TableModifyColumn{{
-					ifExists:         false,
-					column:           "user_name",
-					columnDefinition: ColumnDefinition{DataType: "varchar(100)"},
+					IfExists:         false,
+					Column:           "user_name",
+					ColumnDefinition: ColumnDefinition{DataType: "varchar(100)"},
 				}},
 			},
 		},
@@ -89,9 +107,9 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
-					ifExists: false,
-					column:   "user_name",
-					restrict: false,
+					IfExists: false,
+					Column:   "user_name",
+					Restrict: false,
 				}},
 			},
 		},
@@ -107,9 +125,9 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
-					ifExists: false,
-					column:   "user_name",
-					restrict: true,
+					IfExists: false,
+					Column:   "user_name",
+					Restrict: true,
 				}},
 			},
 		},
@@ -124,9 +142,9 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
-					ifExists: true,
-					column:   "user_name",
-					restrict: true,
+					IfExists: true,
+					Column:   "user_name",
+					Restrict: true,
 				}},
 			},
 		},
@@ -174,8 +192,8 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 				tableName: "PERSONS",
 				DropIndexes: []TableDropIndex{
 					{
-						ifExists: false,
-						column:   "U",
+						IfExists: false,
+						Column:   "U",
 					},
 				},
 			},
@@ -190,8 +208,8 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 				tableName: "PERSONS",
 				DropIndexes: []TableDropIndex{
 					{
-						ifExists: true,
-						column:   "U",
+						IfExists: true,
+						Column:   "U",
 					},
 				},
 			},
@@ -223,9 +241,9 @@ func Test_parseTreeVisitor_VisitAlterByAddColumn(t *testing.T) {
 
 				AddColumns: []TableAddColumn{
 					{
-						ifNotExists: false,
-						column:      "a",
-						columnDefinition: ColumnDefinition{
+						IfNotExists: false,
+						Column:      "a",
+						ColumnDefinition: ColumnDefinition{
 							DataType:          "int",
 							ColumnConstraints: nil,
 						},
@@ -246,17 +264,17 @@ func Test_parseTreeVisitor_VisitAlterByAddColumns(t *testing.T) {
 				DeleteColumn: nil,
 				AddColumns: []TableAddColumn{
 					{
-						ifNotExists: false,
-						column:      "a",
-						columnDefinition: ColumnDefinition{
+						IfNotExists: false,
+						Column:      "a",
+						ColumnDefinition: ColumnDefinition{
 							DataType:          "int",
 							ColumnConstraints: nil,
 						},
 					},
 					{
-						ifNotExists: false,
-						column:      "b",
-						columnDefinition: ColumnDefinition{
+						IfNotExists: false,
+						Column:      "b",
+						ColumnDefinition: ColumnDefinition{
 							DataType:          "int",
 							ColumnConstraints: nil,
 						},
