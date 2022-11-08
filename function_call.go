@@ -4,14 +4,20 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var _ FunctionCall = (*SpecificFunctionCall)(nil)
+
 type (
 	FunctionCall interface {
+		FunctionArg
 		IsFunctionCall()
 	}
 	SpecificFunctionCall struct {
 		SpecificFunction SpecificFunction
 	}
 )
+
+func (s SpecificFunctionCall) IsFunctionArg() {
+}
 
 func (s SpecificFunctionCall) IsFunctionCall() {
 }

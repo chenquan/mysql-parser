@@ -39,6 +39,18 @@ type (
 	}
 )
 
+func (e ExpressionAtomPredicate) IsFunctionArg() {
+}
+
+func (b BinaryComparisonPredicate) IsFunctionArg() {
+}
+
+func (i IsNullPredicate) IsFunctionArg() {
+}
+
+func (i InPredicate) IsFunctionArg() {
+}
+
 func (e ExpressionAtomPredicate) IsExpression() {
 }
 

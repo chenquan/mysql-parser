@@ -18,6 +18,7 @@ var (
 
 type (
 	Constant interface {
+		FunctionArg
 		IsConstant()
 	}
 	ConstantBool struct {
@@ -42,6 +43,27 @@ type (
 		Val string
 	}
 )
+
+func (c ConstantBitString) IsFunctionArg() {
+}
+
+func (c ConstantReal) IsFunctionArg() {
+}
+
+func (c ConstantHexadecimal) IsFunctionArg() {
+}
+
+func (c ConstantDecimal) IsFunctionArg() {
+}
+
+func (c ConstantNull) IsFunctionArg() {
+}
+
+func (c ConstantString) IsFunctionArg() {
+}
+
+func (c ConstantBool) IsFunctionArg() {
+}
 
 func (c ConstantBitString) IsConstant() {
 }

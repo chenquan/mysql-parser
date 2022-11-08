@@ -10,6 +10,7 @@ var (
 	_ SelectElement = (*SelectStarElement)(nil)
 	_ SelectElement = (*SelectColumnElement)(nil)
 	_ SelectElement = (*SelectFunctionElement)(nil)
+	_ FunctionArg   = (*FullColumnName)(nil)
 )
 
 type (
@@ -40,6 +41,9 @@ type (
 		DottedIds []DottedId
 	}
 )
+
+func (f FullColumnName) IsFunctionArg() {
+}
 
 func (s SelectColumnElement) IsSelectElement() {
 }

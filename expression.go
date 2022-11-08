@@ -12,6 +12,7 @@ var (
 
 type (
 	Expression interface {
+		FunctionArg
 		IsExpression()
 	}
 
@@ -29,6 +30,12 @@ type (
 	}
 	PredicateExpression Predicate
 )
+
+func (i IsExpression) IsFunctionArg() {
+}
+
+func (l LogicalExpression) IsFunctionArg() {
+}
 
 func (i IsExpression) IsExpression() {
 }

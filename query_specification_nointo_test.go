@@ -110,7 +110,7 @@ func Test_parseTreeVisitor_VisitQuerySpecificationNointo(t *testing.T) {
 						Function:     "avg",
 						StarArg:      false,
 						Aggregator:   "",
-						FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{Uid: "a"}}},
+						FunctionArgs: []FunctionArg{FullColumnName{Uid: "a"}},
 					}},
 				},
 			},
@@ -135,9 +135,9 @@ func Test_parseTreeVisitor_VisitQuerySpecificationNointo(t *testing.T) {
 					LeftPredicate: ExpressionAtomPredicate{
 						ExpressionAtom: FunctionCallExpressionAtom{FunctionCall: AggregateWindowedFunction{
 							Function: "avg",
-							FunctionArgs: []FunctionArg{{F: FullColumnName{
+							FunctionArgs: []FunctionArg{FullColumnName{
 								Uid: "a",
-							}}},
+							}},
 						}},
 					},
 					ComparisonOperator: ">",

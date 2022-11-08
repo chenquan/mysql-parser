@@ -4,16 +4,12 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
-type FunctionArg struct {
-	F interface{}
+type FunctionArg interface {
+	IsFunctionArg()
 }
 
 func (v *parseTreeVisitor) VisitFunctionArgs(ctx *parser.FunctionArgsContext) interface{} {
 	allFunctionArgCtx := ctx.AllFunctionArg()
-	if len(allFunctionArgCtx) == 0 {
-		return nil
-	}
-
 	functionArgs := make([]FunctionArg, 0, len(allFunctionArgCtx))
 	for _, functionArgCtx := range allFunctionArgCtx {
 		functionArgs = append(functionArgs, functionArgCtx.Accept(v).(FunctionArg))
@@ -25,24 +21,22 @@ func (v *parseTreeVisitor) VisitFunctionArgs(ctx *parser.FunctionArgsContext) in
 func (v *parseTreeVisitor) VisitFunctionArg(ctx *parser.FunctionArgContext) interface{} {
 	constantContext := ctx.Constant()
 	if constantContext != nil {
-		return FunctionArg{
-			F: constantContext.Accept(v),
-		}
+		return constantContext.Accept(v).(Constant)
 	}
 
 	fullColumnNameContext := ctx.FullColumnName()
 	if fullColumnNameContext != nil {
-		return FunctionArg{F: fullColumnNameContext.Accept(v)}
+		return fullColumnNameContext.Accept(v).(FullColumnName)
 	}
 
 	functionCallContext := ctx.FunctionCall()
 	if functionCallContext != nil {
-		return FunctionArg{F: functionCallContext.Accept(v)}
+		return functionCallContext.Accept(v).(FunctionCall)
 	}
 
 	expressionContext := ctx.Expression()
 	if expressionContext != nil {
-		return FunctionArg{F: expressionContext.Accept(v)}
+		return expressionContext.Accept(v).(Expression)
 	}
 
 	return nil
