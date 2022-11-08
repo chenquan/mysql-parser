@@ -37,12 +37,6 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 	return nil
 }
 
-func (v *parseTreeVisitor) VisitCreateDatabase(ctx *parser.CreateDatabaseContext) interface{} {
-	// TODO CreateDatabase
-
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitDropDatabase(ctx *parser.DropDatabaseContext) interface{} {
 	return ctx.Uid().GetText()
 }

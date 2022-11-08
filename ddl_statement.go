@@ -12,7 +12,6 @@ func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) in
 
 	createDatabaseContext := ctx.CreateDatabase()
 	if createDatabaseContext != nil {
-		// TODO CreateDatabase
 		return createDatabaseContext.Accept(v)
 	}
 
