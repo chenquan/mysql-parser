@@ -18,6 +18,9 @@ type (
 	}
 )
 
+func (a AggregateWindowedFunction) IsFunctionArg() {
+}
+
 func (a AggregateWindowedFunction) IsFunctionCall() {
 }
 

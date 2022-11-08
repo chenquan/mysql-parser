@@ -13,17 +13,13 @@ func Test_parseTreeVisitor_VisitFunctionArgs(t *testing.T) {
 
 		assert.EqualValues(t,
 			[]FunctionArg{
-				{
-					F: AggregateWindowedFunction{
-						Function:     "sum",
-						FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{Uid: "a"}}},
-					},
+				AggregateWindowedFunction{
+					Function:     "sum",
+					FunctionArgs: []FunctionArg{FullColumnName{Uid: "a"}},
 				},
-				{
-					F: AggregateWindowedFunction{
-						Function:     "avg",
-						FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{Uid: "b"}}},
-					},
+				AggregateWindowedFunction{
+					Function:     "avg",
+					FunctionArgs: []FunctionArg{FullColumnName{Uid: "b"}},
 				},
 			}, result)
 	})
@@ -36,11 +32,17 @@ func Test_parseTreeVisitor_VisitFunctionArg(t *testing.T) {
 		result := mySqlParser.FunctionArg().Accept(visitor)
 
 		assert.EqualValues(t,
-			FunctionArg{
-				F: AggregateWindowedFunction{
-					Function:     "sum",
-					FunctionArgs: []FunctionArg{{F: FullColumnName{Uid: "a"}}},
-				},
+			AggregateWindowedFunction{
+				Function:     "sum",
+				FunctionArgs: []FunctionArg{FullColumnName{Uid: "a"}},
 			}, result)
+	})
+
+	t.Run("2", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("1")
+		result := mySqlParser.FunctionArg().Accept(visitor)
+
+		assert.EqualValues(t,
+			ConstantDecimal{Val: 1}, result)
 	})
 }

@@ -105,12 +105,10 @@ func TestParseTreeVisitor_VisitSelectElements(t *testing.T) {
 			SelectElements: []SelectElement{
 				SelectFunctionElement{
 					FunctionCall: AggregateWindowedFunction{
-						Function:   "SUM",
-						StarArg:    false,
-						Aggregator: "",
-						FunctionArgs: []FunctionArg{FunctionArg{
-							F: FullColumnName{Uid: "a"},
-						}},
+						Function:     "SUM",
+						StarArg:      false,
+						Aggregator:   "",
+						FunctionArgs: []FunctionArg{FullColumnName{Uid: "a"}},
 					},
 					Alias: "c",
 				},

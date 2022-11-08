@@ -13,10 +13,10 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 		assert.EqualValues(t, AggregateWindowedFunction{
 			Function: "SUM",
 			StarArg:  false,
-			FunctionArgs: []FunctionArg{FunctionArg{F: FullColumnName{
+			FunctionArgs: []FunctionArg{FullColumnName{
 				Uid:       "a",
 				DottedIds: nil,
-			}}},
+			}},
 		}, result)
 	})
 
@@ -26,13 +26,13 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 		assert.EqualValues(t, AggregateWindowedFunction{
 			Function: "SUM",
 			StarArg:  false,
-			FunctionArgs: []FunctionArg{FunctionArg{F: ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
+			FunctionArgs: []FunctionArg{ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
 				LeftExpressionAtom: FullColumnNameExpressionAtom{FullColumnName: FullColumnName{
 					Uid: "a",
 				}},
 				MathOperator:        "+",
 				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
-			}}}},
+			}}},
 		}, result)
 	})
 
@@ -43,11 +43,11 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 			Function:   "SUM",
 			StarArg:    false,
 			Aggregator: "ALL",
-			FunctionArgs: []FunctionArg{FunctionArg{F: ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
+			FunctionArgs: []FunctionArg{ExpressionAtomPredicate{ExpressionAtom: MathExpressionAtom{
 				LeftExpressionAtom:  ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
 				MathOperator:        "MOD",
 				RightExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}},
-			}}}},
+			}}},
 		}, result)
 	})
 
@@ -57,10 +57,8 @@ func Test_parseTreeVisitor_VisitAggregateWindowedFunction(t *testing.T) {
 		assert.EqualValues(t, AggregateWindowedFunction{
 			Function:   "count",
 			Aggregator: "DISTINCT",
-			FunctionArgs: []FunctionArg{FunctionArg{
-				F: FullColumnName{
-					Uid: "id",
-				},
+			FunctionArgs: []FunctionArg{FullColumnName{
+				Uid: "id",
 			}},
 		}, result)
 	})

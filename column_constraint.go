@@ -37,7 +37,6 @@ func (v *parseTreeVisitor) VisitColumnDefinition(ctx *parser.ColumnDefinitionCon
 }
 
 func (v *parseTreeVisitor) VisitDefaultColumnConstraint(ctx *parser.DefaultColumnConstraintContext) interface{} {
-
 	return DefaultColumnConstraint{
 		DefaultValue: ctx.DefaultValue().Accept(v).(DefaultValue),
 	}
