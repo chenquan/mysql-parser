@@ -1535,9 +1535,6 @@ type MySqlParserListener interface {
 	// EnterIfNotExists is called when entering the ifNotExists production.
 	EnterIfNotExists(c *IfNotExistsContext)
 
-	// EnterWaitNowaitClause is called when entering the waitNowaitClause production.
-	EnterWaitNowaitClause(c *WaitNowaitClauseContext)
-
 	// EnterLockOption is called when entering the lockOption production.
 	EnterLockOption(c *LockOptionContext)
 
@@ -3307,9 +3304,6 @@ type MySqlParserListener interface {
 
 	// ExitIfNotExists is called when exiting the ifNotExists production.
 	ExitIfNotExists(c *IfNotExistsContext)
-
-	// ExitWaitNowaitClause is called when exiting the waitNowaitClause production.
-	ExitWaitNowaitClause(c *WaitNowaitClauseContext)
 
 	// ExitLockOption is called when exiting the lockOption production.
 	ExitLockOption(c *LockOptionContext)

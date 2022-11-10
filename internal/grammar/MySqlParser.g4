@@ -140,11 +140,9 @@ createIndex
     : CREATE (OR REPLACE)?                                        // OR is MariaDB-specific only
       intimeAction=(ONLINE | OFFLINE)?
       indexCategory=(UNIQUE | FULLTEXT | SPATIAL)? INDEX
-      (IF NOT EXISTS)?                                            // MariaDB-specific only
+//      (IF NOT EXISTS)?                                            // MariaDB-specific only
       uid indexType?
-      ON tableName indexColumnNames
-      waitNowaitClause?                                           // MariaDB-specific only
-      indexOption*
+      ON tableName indexColumnNames indexOption*
       (
         ALGORITHM EQUAL_SYMBOL? algType=(DEFAULT | INPLACE | COPY | NOCOPY | INSTANT)  // NOCOPY, INSTANT are MariaDB-specific only
         | LOCK EQUAL_SYMBOL? lockType=(DEFAULT | NONE | SHARED | EXCLUSIVE)
@@ -359,8 +357,6 @@ indexOption
     | (VISIBLE | INVISIBLE)
     | ENGINE_ATTRIBUTE EQUAL_SYMBOL? STRING_LITERAL
     | SECONDARY_ENGINE_ATTRIBUTE EQUAL_SYMBOL? STRING_LITERAL
-    | CLUSTERING EQUAL_SYMBOL (YES | NO)                       // MariaDB-specific only
-    | (IGNORED | NOT IGNORED)                                  // MariaDB-specific only
     ;
 
 procedureParameter
@@ -632,8 +628,7 @@ alterServer
 
 alterTable
     : ALTER intimeAction=(ONLINE | OFFLINE)?
-      IGNORE? TABLE tableName waitNowaitClause?
-      (alterSpecification (',' alterSpecification)*)?
+      IGNORE? TABLE tableName (alterSpecification (',' alterSpecification)*)?
       partitionDefinitions?
     ;
 
@@ -756,7 +751,6 @@ dropIndex
         | LOCK '='?
           lockType=(DEFAULT | NONE | SHARED | EXCLUSIVE)
       )*
-      waitNowaitClause?
     ;
 
 dropLogfileGroup
@@ -777,7 +771,7 @@ dropServer
 
 dropTable
     : DROP TEMPORARY? TABLE ifExists?
-      tables waitNowaitClause? dropType=(RESTRICT | CASCADE)?
+      tables dropType=(RESTRICT | CASCADE)?
     ;
 
 dropTablespace
@@ -815,11 +809,11 @@ renameTable
     ;
 
 renameTableClause
-    : tableName waitNowaitClause? TO tableName
+    : tableName TO tableName
     ;
 
 truncateTable
-    : TRUNCATE TABLE? tableName waitNowaitClause?
+    : TRUNCATE TABLE? tableName
     ;
 
 
@@ -1224,7 +1218,7 @@ releaseStatement
     ;
 
 lockTables
-    : LOCK (TABLE | TABLES) lockTableElement (',' lockTableElement)* waitNowaitClause?
+    : LOCK (TABLE | TABLES) lockTableElement (',' lockTableElement)*
     ;
 
 unlockTables
@@ -1749,7 +1743,7 @@ checksumTable
 
 optimizeTable
     : OPTIMIZE actionOption=(NO_WRITE_TO_BINLOG | LOCAL)?
-      (TABLE | TABLES) tables waitNowaitClause?
+      (TABLE | TABLES) tables
     ;
 
 repairTable
@@ -2323,15 +2317,8 @@ ifExists
 ifNotExists
     : IF NOT EXISTS;
 
-// Mariadb-specific
-waitNowaitClause
-    : WAIT decimalLiteral
-    | NOWAIT
-    ;
-
 lockOption
-    : waitNowaitClause
-    | SKIP_ LOCKED
+    :  SKIP_ LOCKED
     ;
 
 //    Functions

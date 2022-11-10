@@ -3173,12 +3173,6 @@ func (s *BaseMySqlParserListener) EnterIfNotExists(ctx *IfNotExistsContext) {}
 // ExitIfNotExists is called when production ifNotExists is exited.
 func (s *BaseMySqlParserListener) ExitIfNotExists(ctx *IfNotExistsContext) {}
 
-// EnterWaitNowaitClause is called when production waitNowaitClause is entered.
-func (s *BaseMySqlParserListener) EnterWaitNowaitClause(ctx *WaitNowaitClauseContext) {}
-
-// ExitWaitNowaitClause is called when production waitNowaitClause is exited.
-func (s *BaseMySqlParserListener) ExitWaitNowaitClause(ctx *WaitNowaitClauseContext) {}
-
 // EnterLockOption is called when production lockOption is entered.
 func (s *BaseMySqlParserListener) EnterLockOption(ctx *LockOptionContext) {}
 

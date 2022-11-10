@@ -20,8 +20,6 @@ type (
 		Renames        []string
 	}
 
-	IndexType string
-
 	TableAddColumn struct {
 		IfNotExists      bool
 		Column           string
@@ -214,19 +212,6 @@ func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrima
 		IndexType: indexType,
 		Columns:   columns,
 	}
-}
-
-func (v *parseTreeVisitor) VisitIndexType(ctx *parser.IndexTypeContext) interface{} {
-	return ctx.GetChild(1).(interface{ GetText() string }).GetText()
-}
-
-func (v *parseTreeVisitor) VisitIndexOption(ctx *parser.IndexOptionContext) interface{} {
-	indexTypeContext := ctx.IndexType()
-	if indexTypeContext != nil {
-		return IndexType(indexTypeContext.Accept(v).(string))
-	}
-
-	return nil
 }
 
 func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUniqueKeyContext) interface{} {
