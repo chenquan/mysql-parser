@@ -20,8 +20,6 @@ type (
 		Renames        []string
 	}
 
-	IndexType string
-
 	TableAddColumn struct {
 		IfNotExists      bool
 		Column           string
@@ -36,7 +34,7 @@ type (
 	TableAddIndex struct {
 		IfNotExists bool
 		IndexName   string
-		IndexType   string
+		IndexType   IndexType
 		Columns     []IndexColumnName
 	}
 	TableAddPrimaryKey struct {
@@ -154,10 +152,10 @@ func (v *parseTreeVisitor) VisitAlterByAddIndex(ctx *parser.AlterByAddIndexConte
 		indexName = uid.GetText()
 	}
 
-	var indexType string
+	var indexType IndexType
 	indexTypeContext := ctx.IndexType()
 	if indexTypeContext != nil {
-		indexType = indexTypeContext.Accept(v).(string)
+		indexType = indexTypeContext.Accept(v).(IndexType)
 	}
 
 	var columns []IndexColumnName
@@ -214,19 +212,6 @@ func (v *parseTreeVisitor) VisitAlterByAddPrimaryKey(ctx *parser.AlterByAddPrima
 		IndexType: indexType,
 		Columns:   columns,
 	}
-}
-
-func (v *parseTreeVisitor) VisitIndexType(ctx *parser.IndexTypeContext) interface{} {
-	return ctx.GetChild(1).(interface{ GetText() string }).GetText()
-}
-
-func (v *parseTreeVisitor) VisitIndexOption(ctx *parser.IndexOptionContext) interface{} {
-	indexTypeContext := ctx.IndexType()
-	if indexTypeContext != nil {
-		return IndexType(indexTypeContext.Accept(v).(string))
-	}
-
-	return nil
 }
 
 func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUniqueKeyContext) interface{} {

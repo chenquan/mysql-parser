@@ -2044,10 +2044,6 @@ func (v *BaseMySqlParserVisitor) VisitIfNotExists(ctx *IfNotExistsContext) inter
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseMySqlParserVisitor) VisitWaitNowaitClause(ctx *WaitNowaitClauseContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseMySqlParserVisitor) VisitLockOption(ctx *LockOptionContext) interface{} {
 	return v.VisitChildren(ctx)
 }

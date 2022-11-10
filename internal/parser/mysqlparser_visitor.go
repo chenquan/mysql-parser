@@ -1535,9 +1535,6 @@ type MySqlParserVisitor interface {
 	// Visit a parse tree produced by MySqlParser#ifNotExists.
 	VisitIfNotExists(ctx *IfNotExistsContext) interface{}
 
-	// Visit a parse tree produced by MySqlParser#waitNowaitClause.
-	VisitWaitNowaitClause(ctx *WaitNowaitClauseContext) interface{}
-
 	// Visit a parse tree produced by MySqlParser#lockOption.
 	VisitLockOption(ctx *LockOptionContext) interface{}
 
