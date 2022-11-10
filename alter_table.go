@@ -34,7 +34,7 @@ type (
 	TableAddIndex struct {
 		IfNotExists bool
 		IndexName   string
-		IndexType   string
+		IndexType   IndexType
 		Columns     []IndexColumnName
 	}
 	TableAddPrimaryKey struct {
@@ -152,10 +152,10 @@ func (v *parseTreeVisitor) VisitAlterByAddIndex(ctx *parser.AlterByAddIndexConte
 		indexName = uid.GetText()
 	}
 
-	var indexType string
+	var indexType IndexType
 	indexTypeContext := ctx.IndexType()
 	if indexTypeContext != nil {
-		indexType = indexTypeContext.Accept(v).(string)
+		indexType = indexTypeContext.Accept(v).(IndexType)
 	}
 
 	var columns []IndexColumnName
