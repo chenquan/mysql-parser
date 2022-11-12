@@ -37,10 +37,6 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 	return nil
 }
 
-func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
-
-	return nil
-}
 
 func (v *parseTreeVisitor) VisitPartitionDefinitions(ctx *parser.PartitionDefinitionsContext) interface{} {
 	for _, c := range ctx.AllPartitionDefinition() {
