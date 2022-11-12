@@ -41,11 +41,6 @@ func (v *parseTreeVisitor) VisitDropDatabase(ctx *parser.DropDatabaseContext) in
 	return ctx.Uid().GetText()
 }
 
-func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
-
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitPartitionDefinitions(ctx *parser.PartitionDefinitionsContext) interface{} {
 	for _, c := range ctx.AllPartitionDefinition() {
 		// TODO PartitionDefinitions
