@@ -5,7 +5,7 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
-func Parser(sql string) interface{} {
+func Parse(sql string) interface{} {
 	if sql == "" {
 		return nil
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 func TestParser_CreateTableCopyCreateTable(t *testing.T) {
-	result := Parser("CREATE TABLE A LIKE B;")
+	result := Parse("CREATE TABLE A LIKE B;")
 	assert.EqualValues(t, []SqlStatement{
 		CopyCreateTable{
 			IfNotExists:   false,
@@ -18,7 +18,7 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		},
 	}, result)
 
-	result = Parser("CREATE TABLE IF NOT EXISTS A LIKE B;")
+	result = Parse("CREATE TABLE IF NOT EXISTS A LIKE B;")
 	assert.EqualValues(t, []SqlStatement{CopyCreateTable{
 		IfNotExists:   true,
 		Replace:       false,
@@ -27,7 +27,7 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		ToTableName:   "B",
 	}}, result)
 
-	result = Parser("CREATE OR REPLACE TABLE IF NOT EXISTS A LIKE B;")
+	result = Parse("CREATE OR REPLACE TABLE IF NOT EXISTS A LIKE B;")
 	assert.EqualValues(t, []SqlStatement{CopyCreateTable{
 		IfNotExists:   true,
 		Replace:       true,
@@ -36,7 +36,7 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		ToTableName:   "B",
 	}}, result)
 
-	result = Parser("CREATE OR REPLACE TEMPORARY TABLE IF NOT EXISTS A LIKE B;")
+	result = Parse("CREATE OR REPLACE TEMPORARY TABLE IF NOT EXISTS A LIKE B;")
 	assert.EqualValues(t, []SqlStatement{CopyCreateTable{
 		IfNotExists:   true,
 		Replace:       true,

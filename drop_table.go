@@ -4,11 +4,16 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var _ SqlStatement = (*DropTable)(nil)
+
 type DropTable struct {
 	IfExists   bool
 	Temporary  bool
 	TableNames []TableName
 	DropType   string
+}
+
+func (d DropTable) IsSqlStatement() {
 }
 
 func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {

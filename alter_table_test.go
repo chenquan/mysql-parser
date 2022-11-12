@@ -7,7 +7,7 @@ import (
 )
 
 func TestParser_AlterTableAddIndex(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n ADD INDEX user_name_index using HASH (user_name);")
+	result := Parse("ALTER TABLE PERSONS\n ADD INDEX user_name_index using HASH (user_name);")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -33,7 +33,7 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 }
 
 func TestParser_AlterTablePrimaryKey(t *testing.T) {
-	result := Parser("ALTER TABLE Persons\n ADD PRIMARY KEY  (user_name) USING HASH;")
+	result := Parse("ALTER TABLE Persons\n ADD PRIMARY KEY  (user_name) USING HASH;")
 	assert.EqualValues(t, []SqlStatement{AlterTable{
 		tableName:    "Persons",
 		AddColumns:   nil,
@@ -55,7 +55,7 @@ func TestParser_AlterTablePrimaryKey(t *testing.T) {
 }
 
 func TestParser_AlterTableUniqueKey(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
+	result := Parse("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
@@ -80,7 +80,7 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 }
 
 func TestParser_AlterTableModifyColumn(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n MODIFY COLUMN user_name varchar(100);")
+	result := Parse("ALTER TABLE PERSONS\n MODIFY COLUMN user_name varchar(100);")
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
@@ -99,7 +99,7 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 }
 
 func TestParser_AlterTableDropColumn(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name;")
+	result := Parse("ALTER TABLE PERSONS\n DROP COLUMN user_name;")
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
@@ -116,7 +116,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 		result,
 	)
 
-	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN user_name RESTRICT;")
+	result = Parse("ALTER TABLE PERSONS\n DROP COLUMN user_name RESTRICT;")
 	assert.EqualValues(
 		t,
 		[]SqlStatement{
@@ -134,7 +134,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 		result,
 	)
 
-	result = Parser("ALTER TABLE PERSONS\n DROP COLUMN IF EXISTS user_name RESTRICT;")
+	result = Parse("ALTER TABLE PERSONS\n DROP COLUMN IF EXISTS user_name RESTRICT;")
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
@@ -153,7 +153,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 }
 
 func TestParser_AlterTableDropPrimaryKey(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n DROP PRIMARY KEY;")
+	result := Parse("ALTER TABLE PERSONS\n DROP PRIMARY KEY;")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -166,7 +166,7 @@ func TestParser_AlterTableDropPrimaryKey(t *testing.T) {
 }
 
 func TestParser_AlterTableRenameIndex(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n RENAME INDEX A TO B;")
+	result := Parse("ALTER TABLE PERSONS\n RENAME INDEX A TO B;")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -184,7 +184,7 @@ func TestParser_AlterTableRenameIndex(t *testing.T) {
 }
 
 func TestParser_AlterTableDropIndex(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n DROP INDEX U")
+	result := Parse("ALTER TABLE PERSONS\n DROP INDEX U")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -200,7 +200,7 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 		},
 	)
 
-	result = Parser("ALTER TABLE PERSONS\n DROP INDEX IF EXISTS U")
+	result = Parse("ALTER TABLE PERSONS\n DROP INDEX IF EXISTS U")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -218,7 +218,7 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 }
 
 func TestParser_AlterTableRename(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n RENAME A")
+	result := Parse("ALTER TABLE PERSONS\n RENAME A")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -231,7 +231,7 @@ func TestParser_AlterTableRename(t *testing.T) {
 }
 
 func Test_parseTreeVisitor_VisitAlterByAddColumn(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n ADD column a int;")
+	result := Parse("ALTER TABLE PERSONS\n ADD column a int;")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
@@ -255,7 +255,7 @@ func Test_parseTreeVisitor_VisitAlterByAddColumn(t *testing.T) {
 }
 
 func Test_parseTreeVisitor_VisitAlterByAddColumns(t *testing.T) {
-	result := Parser("ALTER TABLE PERSONS\n ADD column (a int, b int);")
+	result := Parse("ALTER TABLE PERSONS\n ADD column (a int, b int);")
 	assert.EqualValues(t,
 		result,
 		[]SqlStatement{
