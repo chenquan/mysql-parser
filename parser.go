@@ -35,17 +35,3 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 
 	return nil
 }
-
-func (v *parseTreeVisitor) VisitDmlStatement(ctx *parser.DmlStatementContext) interface{} {
-	selectStatementContext := ctx.SelectStatement()
-	if selectStatementContext != nil {
-		return selectStatementContext.Accept(v).(SelectStatement)
-	}
-
-	insertStatementContext := ctx.InsertStatement()
-	if insertStatementContext != nil {
-		return insertStatementContext.Accept(v).(InsertStatement)
-	}
-
-	return nil
-}

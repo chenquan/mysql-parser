@@ -24,7 +24,6 @@ func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) in
 	if alterDatabaseContext != nil {
 		switch alter := alterDatabaseContext.(type) {
 		case *parser.AlterSimpleDatabaseContext, *parser.AlterUpgradeNameContext:
-			// TODO AlterDatabase
 			return alter.Accept(v)
 		}
 		return nil
@@ -33,6 +32,11 @@ func (v *parseTreeVisitor) VisitDdlStatement(ctx *parser.DdlStatementContext) in
 	alterTableContext := ctx.AlterTable()
 	if alterTableContext != nil {
 		return alterTableContext.Accept(v).(AlterTable)
+	}
+
+	dropTableContext := ctx.DropTable()
+	if dropTableContext != nil {
+		return dropTableContext.Accept(v).(DropTable)
 	}
 
 	return nil
