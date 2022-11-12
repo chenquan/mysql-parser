@@ -941,7 +941,7 @@ insertStatementValue
     ;
 
 updatedElement
-    : fullColumnName '=' (expression | DEFAULT)
+    : fullColumnName '=' expressionOrDefault
     ;
 
 assignmentField
