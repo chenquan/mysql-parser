@@ -2,7 +2,6 @@ package parser
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
@@ -37,20 +36,15 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 	return nil
 }
 
-
-func (v *parseTreeVisitor) VisitPartitionDefinitions(ctx *parser.PartitionDefinitionsContext) interface{} {
-	for _, c := range ctx.AllPartitionDefinition() {
-		// TODO PartitionDefinitions
-		fmt.Println(c.GetText())
-	}
-
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitDmlStatement(ctx *parser.DmlStatementContext) interface{} {
 	selectStatementContext := ctx.SelectStatement()
 	if selectStatementContext != nil {
 		return selectStatementContext.Accept(v).(SelectStatement)
+	}
+
+	insertStatementContext := ctx.InsertStatement()
+	if insertStatementContext != nil {
+		return insertStatementContext.Accept(v).(InsertStatement)
 	}
 
 	return nil
