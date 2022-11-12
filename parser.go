@@ -41,16 +41,6 @@ func (v *parseTreeVisitor) VisitDropDatabase(ctx *parser.DropDatabaseContext) in
 	return ctx.Uid().GetText()
 }
 
-func (v *parseTreeVisitor) VisitAlterSimpleDatabase(ctx *parser.AlterSimpleDatabaseContext) interface{} {
-	// TODO AlterSimpleDatabase
-	return nil
-}
-
-func (v *parseTreeVisitor) VisitAlterUpgradeName(ctx *parser.AlterUpgradeNameContext) interface{} {
-	// TODO AlterUpgradeName
-	return nil
-}
-
 func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
 
 	return nil
