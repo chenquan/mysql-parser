@@ -37,10 +37,6 @@ func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
 	return nil
 }
 
-func (v *parseTreeVisitor) VisitDropDatabase(ctx *parser.DropDatabaseContext) interface{} {
-	return ctx.Uid().GetText()
-}
-
 func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
 
 	return nil
