@@ -88,37 +88,6 @@ func TestParser_CreateTableQueryCreateTable(t *testing.T) {
 			},
 		}, result)
 	})
-
-	t.Run("2", func(t *testing.T) {
-		mySqlParser, visitor := createMySqlParser("CREATE TEMPORARY TABLE a (a int,b int);")
-		result := mySqlParser.CreateTable().Accept(visitor)
-
-		assert.EqualValues(t, QueryCreateTable{
-			IfNotExists: false,
-			Replace:     false,
-			Temporary:   true,
-			Table: FullId{
-				Uid:   "a",
-				DotId: "",
-			},
-			CreateDefinitions: []CreateDefinition{
-				ColumnDeclaration{
-					Column: "a",
-					ColumnDefinition: ColumnDefinition{
-						DataType:          "int",
-						ColumnConstraints: nil,
-					},
-				},
-				ColumnDeclaration{
-					Column: "b",
-					ColumnDefinition: ColumnDefinition{
-						DataType:          "int",
-						ColumnConstraints: nil,
-					},
-				},
-			},
-		}, result)
-	})
 }
 
 func TestParser_CreateTableColumnCreateTable(t *testing.T) {
