@@ -11,7 +11,7 @@ var (
 
 type (
 	InsertStatementValue interface {
-		IsInsertStatementValue()
+		isInsertStatementValue()
 	}
 	InsertStatementValueSelectStatement struct {
 		SelectStatement SelectStatement
@@ -21,10 +21,10 @@ type (
 	}
 )
 
-func (i InsertStatementValuedExpressionsWithDefaults) IsInsertStatementValue() {
+func (i InsertStatementValuedExpressionsWithDefaults) isInsertStatementValue() {
 }
 
-func (i InsertStatementValueSelectStatement) IsInsertStatementValue() {
+func (i InsertStatementValueSelectStatement) isInsertStatementValue() {
 }
 
 func (v *parseTreeVisitor) VisitInsertStatementValue(ctx *parser.InsertStatementValueContext) interface{} {

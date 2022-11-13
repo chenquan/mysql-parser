@@ -8,7 +8,7 @@ import (
 
 type (
 	CreateDatabaseOption interface {
-		IsCreateDatabaseOption()
+		isCreateDatabaseOption()
 	}
 	CreateDatabaseOptionCharSet struct {
 		CharSet     string
@@ -27,16 +27,16 @@ type (
 	}
 )
 
-func (c CreateDatabaseOptionReadonly) IsCreateDatabaseOption() {
+func (c CreateDatabaseOptionReadonly) isCreateDatabaseOption() {
 }
 
-func (c CreateDatabaseOptionCollate) IsCreateDatabaseOption() {
+func (c CreateDatabaseOptionCollate) isCreateDatabaseOption() {
 }
 
-func (c CreateDatabaseOptionEncryption) IsCreateDatabaseOption() {
+func (c CreateDatabaseOptionEncryption) isCreateDatabaseOption() {
 }
 
-func (c CreateDatabaseOptionCharSet) IsCreateDatabaseOption() {
+func (c CreateDatabaseOptionCharSet) isCreateDatabaseOption() {
 }
 
 func (v *parseTreeVisitor) VisitCreateDatabaseOption(ctx *parser.CreateDatabaseOptionContext) interface{} {

@@ -18,10 +18,10 @@ type (
 	}
 )
 
-func (a AggregateWindowedFunction) IsFunctionArg() {
+func (a AggregateWindowedFunction) isFunctionArg() {
 }
 
-func (a AggregateWindowedFunction) IsFunctionCall() {
+func (a AggregateWindowedFunction) isFunctionCall() {
 }
 
 func (v *parseTreeVisitor) VisitAggregateWindowedFunction(ctx *parser.AggregateWindowedFunctionContext) interface{} {

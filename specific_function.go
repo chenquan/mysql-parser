@@ -7,7 +7,7 @@ import (
 
 type (
 	SpecificFunction interface {
-		IsSpecificFunction()
+		isSpecificFunction()
 	}
 	SimpleFunctionCall struct {
 		Function string
@@ -19,10 +19,10 @@ type (
 	}
 )
 
-func (s SimpleFunctionCall) IsSpecificFunction() {
+func (s SimpleFunctionCall) isSpecificFunction() {
 }
 
-func (d DataTypeFunctionCall) IsFunctionCall() {
+func (d DataTypeFunctionCall) isFunctionCall() {
 }
 
 func (v *parseTreeVisitor) VisitSimpleFunctionCall(ctx *parser.SimpleFunctionCallContext) interface{} {

@@ -42,7 +42,7 @@ type (
 	}
 )
 
-func (f FullColumnName) IsFunctionArg() {
+func (f FullColumnName) isFunctionArg() {
 }
 
 func (s SelectColumnElement) IsSelectElement() {

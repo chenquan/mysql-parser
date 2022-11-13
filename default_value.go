@@ -15,7 +15,7 @@ var (
 
 type (
 	DefaultValue interface {
-		IsDefaultValue()
+		isDefaultValue()
 	}
 
 	DefaultValueNullLiteral struct {
@@ -47,28 +47,28 @@ type (
 	}
 )
 
-func (d DefaultValueNextValue) IsDefaultValue() {
+func (d DefaultValueNextValue) isDefaultValue() {
 }
 
-func (d DefaultValuePreviousValue) IsDefaultValue() {
+func (d DefaultValuePreviousValue) isDefaultValue() {
 }
 
-func (d DefaultValueNextval) IsDefaultValue() {
+func (d DefaultValueNextval) isDefaultValue() {
 }
 
-func (d DefaultValueLastval) IsDefaultValue() {
+func (d DefaultValueLastval) isDefaultValue() {
 }
 
-func (d DefaultValueConstant) IsDefaultValue() {
+func (d DefaultValueConstant) isDefaultValue() {
 }
 
-func (d DefaultValueExpression) IsDefaultValue() {
+func (d DefaultValueExpression) isDefaultValue() {
 }
 
-func (d DefaultValueCast) IsDefaultValue() {
+func (d DefaultValueCast) isDefaultValue() {
 }
 
-func (d DefaultValueNullLiteral) IsDefaultValue() {
+func (d DefaultValueNullLiteral) isDefaultValue() {
 }
 
 func (v *parseTreeVisitor) VisitDefaultValue(ctx *parser.DefaultValueContext) interface{} {

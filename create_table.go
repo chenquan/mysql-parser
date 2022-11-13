@@ -12,7 +12,7 @@ var (
 
 type (
 	CreatTable interface {
-		IsCreatTable()
+		isCreatTable()
 	}
 
 	CopyCreateTable struct {
@@ -38,14 +38,14 @@ type (
 		CreateDefinitions []CreateDefinition
 	}
 	CreateDefinition interface {
-		IsCreateDefinition()
+		isCreateDefinition()
 	}
 	ColumnDeclaration struct {
 		Column           string
 		ColumnDefinition ColumnDefinition
 	}
 	IndexDeclaration interface {
-		IsIndexDeclaration()
+		isIndexDeclaration()
 		CreateDefinition
 	}
 
@@ -56,24 +56,24 @@ type (
 	}
 )
 
-func (c CopyCreateTable) IsSqlStatement() {
+func (c CopyCreateTable) isSqlStatement() {
 }
 
-func (p PrimaryKeyTableConstraint) IsColumnConstraint() {
+func (p PrimaryKeyTableConstraint) isColumnConstraint() {
 }
 
-func (p PrimaryKeyTableConstraint) IsCreateDefinition() {
+func (p PrimaryKeyTableConstraint) isCreateDefinition() {
 }
 
-func (c ColumnDeclaration) IsCreateDefinition() {}
+func (c ColumnDeclaration) isCreateDefinition() {}
 
-func (c ColumnCreateTable) IsCreatTable() {
+func (c ColumnCreateTable) isCreatTable() {
 }
 
-func (q QueryCreateTable) IsCreatTable() {
+func (q QueryCreateTable) isCreatTable() {
 }
 
-func (c CopyCreateTable) IsCreatTable() {
+func (c CopyCreateTable) isCreatTable() {
 }
 
 func (v *parseTreeVisitor) VisitCopyCreateTable(ctx *parser.CopyCreateTableContext) interface{} {

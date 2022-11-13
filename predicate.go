@@ -39,34 +39,34 @@ type (
 	}
 )
 
-func (e ExpressionAtomPredicate) IsFunctionArg() {
+func (e ExpressionAtomPredicate) isFunctionArg() {
 }
 
-func (b BinaryComparisonPredicate) IsFunctionArg() {
+func (b BinaryComparisonPredicate) isFunctionArg() {
 }
 
-func (i IsNullPredicate) IsFunctionArg() {
+func (i IsNullPredicate) isFunctionArg() {
 }
 
-func (i InPredicate) IsFunctionArg() {
+func (i InPredicate) isFunctionArg() {
 }
 
-func (e ExpressionAtomPredicate) IsExpression() {
+func (e ExpressionAtomPredicate) isExpression() {
 }
 
-func (b BinaryComparisonPredicate) IsExpression() {
+func (b BinaryComparisonPredicate) isExpression() {
 }
 
 func (b BinaryComparisonPredicate) IsPredicate() {
 }
 
-func (i IsNullPredicate) IsExpression() {
+func (i IsNullPredicate) isExpression() {
 }
 
 func (i IsNullPredicate) IsPredicate() {
 }
 
-func (i InPredicate) IsExpression() {
+func (i InPredicate) isExpression() {
 }
 
 func (e ExpressionAtomPredicate) IsPredicate() {

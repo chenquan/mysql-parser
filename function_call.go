@@ -9,17 +9,17 @@ var _ FunctionCall = (*SpecificFunctionCall)(nil)
 type (
 	FunctionCall interface {
 		FunctionArg
-		IsFunctionCall()
+		isFunctionCall()
 	}
 	SpecificFunctionCall struct {
 		SpecificFunction SpecificFunction
 	}
 )
 
-func (s SpecificFunctionCall) IsFunctionArg() {
+func (s SpecificFunctionCall) isFunctionArg() {
 }
 
-func (s SpecificFunctionCall) IsFunctionCall() {
+func (s SpecificFunctionCall) isFunctionCall() {
 }
 
 func (v *parseTreeVisitor) VisitSpecificFunctionCall(ctx *parser.SpecificFunctionCallContext) interface{} {

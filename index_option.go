@@ -17,7 +17,7 @@ var (
 
 type (
 	IndexOption interface {
-		IsIndexOption()
+		isIndexOption()
 	}
 	IndexOptionKeyBlockSize struct {
 		BlockSize string
@@ -40,21 +40,21 @@ type (
 	}
 )
 
-func (i IndexOptionSecondaryEngineAttribute) IsIndexOption() {
+func (i IndexOptionSecondaryEngineAttribute) isIndexOption() {
 }
 
-func (i IndexOptionEngineAttribute) IsIndexOption() {
+func (i IndexOptionEngineAttribute) isIndexOption() {
 }
 
-func (i IndexOptionVisible) IsIndexOption() {}
+func (i IndexOptionVisible) isIndexOption() {}
 
-func (i IndexOptionComment) IsIndexOption() {
+func (i IndexOptionComment) isIndexOption() {
 }
 
-func (i IndexOptionWithParser) IsIndexOption() {
+func (i IndexOptionWithParser) isIndexOption() {
 }
 
-func (i IndexOptionKeyBlockSize) IsIndexOption() {
+func (i IndexOptionKeyBlockSize) isIndexOption() {
 }
 
 func (v *parseTreeVisitor) VisitIndexOption(ctx *parser.IndexOptionContext) interface{} {

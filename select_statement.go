@@ -21,10 +21,10 @@ type (
 	}
 )
 
-func (s SimpleSelect) IsSqlStatement() {
+func (s SimpleSelect) isSqlStatement() {
 }
 
-func (s SimpleSelect) IsDmlStatement() {
+func (s SimpleSelect) isDmlStatement() {
 }
 
 func (s SimpleSelect) IsSelectStatement() {

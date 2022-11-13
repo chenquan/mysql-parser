@@ -6,15 +6,15 @@ import (
 
 type (
 	SqlStatement interface {
-		IsSqlStatement()
+		isSqlStatement()
 	}
 	DdlStatement interface {
 		SqlStatement
-		IsDdlStatement()
+		isDdlStatement()
 	}
 	DmlStatement interface {
 		SqlStatement
-		IsDmlStatement()
+		isDmlStatement()
 	}
 )
 

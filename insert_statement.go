@@ -27,26 +27,26 @@ type (
 
 	InsertStatement interface {
 		DmlStatement
-		IsInsertStatement()
+		isInsertStatement()
 	}
 )
 
-func (i InsertStatementSetValue) IsSqlStatement() {
+func (i InsertStatementSetValue) isSqlStatement() {
 }
 
-func (i InsertStatementSetValue) IsDmlStatement() {
+func (i InsertStatementSetValue) isDmlStatement() {
 }
 
-func (i InsertStatementSetValue) IsInsertStatement() {
+func (i InsertStatementSetValue) isInsertStatement() {
 }
 
-func (i InsertStatementIntoValue) IsInsertStatement() {
+func (i InsertStatementIntoValue) isInsertStatement() {
 }
 
-func (i InsertStatementIntoValue) IsSqlStatement() {
+func (i InsertStatementIntoValue) isSqlStatement() {
 }
 
-func (i InsertStatementIntoValue) IsDmlStatement() {
+func (i InsertStatementIntoValue) isDmlStatement() {
 }
 
 func (v *parseTreeVisitor) VisitInsertStatement(ctx *parser.InsertStatementContext) interface{} {
