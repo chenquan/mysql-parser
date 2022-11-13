@@ -19,14 +19,14 @@ type (
 		IfNotExists   bool
 		Replace       bool
 		Temporary     bool
-		FromTableName FullId
-		ToTableName   FullId
+		FromTableName TableName
+		ToTableName   TableName
 	}
 	QueryCreateTable struct {
 		IfNotExists       bool
 		Replace           bool
 		Temporary         bool
-		Table             FullId
+		Table             TableName
 		CreateDefinitions []CreateDefinition
 		SelectStatement   SelectStatement
 	}
@@ -34,7 +34,7 @@ type (
 		IfNotExists       bool
 		Replace           bool
 		Temporary         bool
-		Table             FullId
+		Table             TableName
 		CreateDefinitions []CreateDefinition
 	}
 	CreateDefinition interface {
