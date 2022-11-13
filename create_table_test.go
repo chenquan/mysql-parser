@@ -13,8 +13,8 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 			IfNotExists:   false,
 			Replace:       false,
 			Temporary:     false,
-			FromTableName: FullId{Uid: "A"},
-			ToTableName:   FullId{Uid: "B"},
+			FromTableName: TableName{Uid: "A"},
+			ToTableName:   TableName{Uid: "B"},
 		},
 	}, result)
 
@@ -23,8 +23,8 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		IfNotExists:   true,
 		Replace:       false,
 		Temporary:     false,
-		FromTableName: FullId{Uid: "A"},
-		ToTableName:   FullId{Uid: "B"},
+		FromTableName: TableName{Uid: "A"},
+		ToTableName:   TableName{Uid: "B"},
 	}}, result)
 
 	result = Parse("CREATE OR REPLACE TABLE IF NOT EXISTS A LIKE B;")
@@ -32,8 +32,8 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		IfNotExists:   true,
 		Replace:       true,
 		Temporary:     false,
-		FromTableName: FullId{Uid: "A"},
-		ToTableName:   FullId{Uid: "B"},
+		FromTableName: TableName{Uid: "A"},
+		ToTableName:   TableName{Uid: "B"},
 	}}, result)
 
 	result = Parse("CREATE OR REPLACE TEMPORARY TABLE IF NOT EXISTS A LIKE B;")
@@ -41,8 +41,8 @@ func TestParser_CreateTableCopyCreateTable(t *testing.T) {
 		IfNotExists:   true,
 		Replace:       true,
 		Temporary:     true,
-		FromTableName: FullId{Uid: "A"},
-		ToTableName:   FullId{Uid: "B"},
+		FromTableName: TableName{Uid: "A"},
+		ToTableName:   TableName{Uid: "B"},
 	}}, result)
 }
 
@@ -99,7 +99,7 @@ func TestParser_CreateTableColumnCreateTable(t *testing.T) {
 			IfNotExists: false,
 			Replace:     false,
 			Temporary:   true,
-			Table: FullId{
+			Table: TableName{
 				Uid:   "a",
 				DotId: "",
 			},
@@ -130,7 +130,7 @@ func TestParser_CreateTableColumnCreateTable(t *testing.T) {
 			IfNotExists: true,
 			Replace:     true,
 			Temporary:   true,
-			Table: FullId{
+			Table: TableName{
 				Uid:   "a",
 				DotId: "",
 			},
