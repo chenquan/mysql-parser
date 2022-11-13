@@ -16,7 +16,9 @@ type (
 		isExpression()
 	}
 
-	NotExpression Expression
+	NotExpression struct {
+		Expression
+	}
 
 	LogicalExpression struct {
 		LeftExpression  Expression
@@ -47,7 +49,7 @@ func (v *parseTreeVisitor) VisitExpressions(ctx *parser.ExpressionsContext) inte
 }
 
 func (v *parseTreeVisitor) VisitNotExpression(ctx *parser.NotExpressionContext) interface{} {
-	return NotExpression(ctx.Expression().Accept(v).(Expression))
+	return NotExpression{Expression: ctx.Expression().Accept(v).(Expression)}
 }
 
 func (v *parseTreeVisitor) VisitLogicalExpression(ctx *parser.LogicalExpressionContext) interface{} {

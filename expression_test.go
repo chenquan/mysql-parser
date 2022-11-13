@@ -7,10 +7,11 @@ import (
 )
 
 func Test_parseTreeVisitor_VisitNotExpression(t *testing.T) {
-	// TODO
-	//mySqlParser, visitor := createMySqlParser("\"1!=1 AND a!=2\"")
-	//result := mySqlParser.Expression().Accept(visitor)
-	//assert.EqualValues(t, NotExpression, result)
+	t.Run("1", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("NOT 1")
+		result := mySqlParser.Expression().Accept(visitor)
+		assert.EqualValues(t, NotExpression{Expression: ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}}}, result)
+	})
 }
 
 func Test_parseTreeVisitor_VisitLogicalExpression(t *testing.T) {
