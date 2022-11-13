@@ -15,7 +15,7 @@ type ConvertedDataType struct {
 
 type (
 	LengthDimension interface {
-		IsLengthDimension()
+		isLengthDimension()
 	}
 	LengthOneDimension struct {
 		Dimension float64
@@ -26,11 +26,8 @@ type (
 	}
 )
 
-func (l LengthTwoDimension) IsLengthDimension() {
-}
-
-func (l LengthOneDimension) IsLengthDimension() {
-}
+func (l LengthTwoDimension) isLengthDimension() {}
+func (l LengthOneDimension) isLengthDimension() {}
 
 func (v *parseTreeVisitor) VisitConvertedDataType(ctx *parser.ConvertedDataTypeContext) interface{} {
 	var typeName string

@@ -13,8 +13,7 @@ type DropTable struct {
 	DropType   string
 }
 
-func (d DropTable) IsSqlStatement() {
-}
+func (d DropTable) isSqlStatement() {}
 
 func (v *parseTreeVisitor) VisitDropTable(ctx *parser.DropTableContext) interface{} {
 	var dropType string

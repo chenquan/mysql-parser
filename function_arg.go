@@ -5,7 +5,7 @@ import (
 )
 
 type FunctionArg interface {
-	IsFunctionArg()
+	isFunctionArg()
 }
 
 func (v *parseTreeVisitor) VisitFunctionArgs(ctx *parser.FunctionArgsContext) interface{} {

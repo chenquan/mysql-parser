@@ -11,7 +11,7 @@ var (
 
 type (
 	AlterDatabase interface {
-		IsAlterDatabase()
+		isAlterDatabase()
 	}
 	AlterSimpleDatabase struct {
 		DatabaseName          string
@@ -22,11 +22,8 @@ type (
 	}
 )
 
-func (a AlterUpgradeName) IsAlterDatabase() {
-}
-
-func (a AlterSimpleDatabase) IsAlterDatabase() {
-}
+func (a AlterUpgradeName) isAlterDatabase()    {}
+func (a AlterSimpleDatabase) isAlterDatabase() {}
 
 func (v *parseTreeVisitor) VisitAlterSimpleDatabase(ctx *parser.AlterSimpleDatabaseContext) interface{} {
 	var databaseName string

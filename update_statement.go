@@ -2,7 +2,7 @@ package parser
 
 type (
 	UpdateStatement interface {
-		IsUpdateStatement()
+		isUpdateStatement()
 	}
 	SingleUpdateStatement struct {
 	}

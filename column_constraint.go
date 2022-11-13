@@ -6,7 +6,7 @@ import (
 
 type (
 	ColumnConstraint interface {
-		IsColumnConstraint()
+		isColumnConstraint()
 		CreateDefinition
 	}
 	DefaultColumnConstraint struct {
@@ -14,11 +14,8 @@ type (
 	}
 )
 
-func (d DefaultColumnConstraint) IsColumnConstraint() {
-}
-
-func (d DefaultColumnConstraint) IsCreateDefinition() {
-}
+func (d DefaultColumnConstraint) isColumnConstraint() {}
+func (d DefaultColumnConstraint) isCreateDefinition() {}
 
 func (v *parseTreeVisitor) VisitColumnDefinition(ctx *parser.ColumnDefinitionContext) interface{} {
 	allColumnConstraint := ctx.AllColumnConstraint()

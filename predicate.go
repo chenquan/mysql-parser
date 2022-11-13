@@ -14,7 +14,7 @@ var (
 type (
 	Predicate interface {
 		Expression
-		IsPredicate()
+		isPredicate()
 	}
 
 	InPredicate struct {
@@ -39,41 +39,18 @@ type (
 	}
 )
 
-func (e ExpressionAtomPredicate) IsFunctionArg() {
-}
-
-func (b BinaryComparisonPredicate) IsFunctionArg() {
-}
-
-func (i IsNullPredicate) IsFunctionArg() {
-}
-
-func (i InPredicate) IsFunctionArg() {
-}
-
-func (e ExpressionAtomPredicate) IsExpression() {
-}
-
-func (b BinaryComparisonPredicate) IsExpression() {
-}
-
-func (b BinaryComparisonPredicate) IsPredicate() {
-}
-
-func (i IsNullPredicate) IsExpression() {
-}
-
-func (i IsNullPredicate) IsPredicate() {
-}
-
-func (i InPredicate) IsExpression() {
-}
-
-func (e ExpressionAtomPredicate) IsPredicate() {
-}
-
-func (i InPredicate) IsPredicate() {
-}
+func (e ExpressionAtomPredicate) isFunctionArg()   {}
+func (b BinaryComparisonPredicate) isFunctionArg() {}
+func (i IsNullPredicate) isFunctionArg()           {}
+func (i InPredicate) isFunctionArg()               {}
+func (e ExpressionAtomPredicate) isExpression()    {}
+func (b BinaryComparisonPredicate) isExpression()  {}
+func (b BinaryComparisonPredicate) isPredicate()   {}
+func (i IsNullPredicate) isExpression()            {}
+func (i IsNullPredicate) isPredicate()             {}
+func (i InPredicate) isExpression()                {}
+func (e ExpressionAtomPredicate) isPredicate()     {}
+func (i InPredicate) isPredicate()                 {}
 
 func (v *parseTreeVisitor) VisitInPredicate(ctx *parser.InPredicateContext) interface{} {
 	var selectStatement SelectStatement

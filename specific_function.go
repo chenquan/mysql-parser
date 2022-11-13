@@ -5,9 +5,14 @@ import (
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
+var (
+	_ SpecificFunction = (*SimpleFunctionCall)(nil)
+	_ SpecificFunction = (*DataTypeFunctionCall)(nil)
+)
+
 type (
 	SpecificFunction interface {
-		IsSpecificFunction()
+		isSpecificFunction()
 	}
 	SimpleFunctionCall struct {
 		Function string
@@ -19,11 +24,8 @@ type (
 	}
 )
 
-func (s SimpleFunctionCall) IsSpecificFunction() {
-}
-
-func (d DataTypeFunctionCall) IsFunctionCall() {
-}
+func (d DataTypeFunctionCall) isSpecificFunction() {}
+func (s SimpleFunctionCall) isSpecificFunction()   {}
 
 func (v *parseTreeVisitor) VisitSimpleFunctionCall(ctx *parser.SimpleFunctionCallContext) interface{} {
 	child := ctx.GetChild(0)

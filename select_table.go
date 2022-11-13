@@ -19,7 +19,7 @@ type (
 		SelectElements []SelectElement
 	}
 	SelectElement interface {
-		IsSelectElement()
+		isSelectElement()
 	}
 	SelectStarElement struct {
 		TableName FullId
@@ -40,26 +40,16 @@ type (
 		Uid       string
 		DottedIds []DottedId
 	}
-)
-
-func (f FullColumnName) IsFunctionArg() {
-}
-
-func (s SelectColumnElement) IsSelectElement() {
-}
-
-type (
 	SelectFunctionElement struct {
 		FunctionCall FunctionCall
 		Alias        string
 	}
 )
 
-func (s SelectFunctionElement) IsSelectElement() {
-}
-
-func (s SelectStarElement) IsSelectElement() {
-}
+func (f FullColumnName) isFunctionArg()          {}
+func (s SelectColumnElement) isSelectElement()   {}
+func (s SelectFunctionElement) isSelectElement() {}
+func (s SelectStarElement) isSelectElement()     {}
 
 func (v *parseTreeVisitor) VisitSelectElements(ctx *parser.SelectElementsContext) interface{} {
 	star := ctx.GetStar() != nil

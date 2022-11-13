@@ -5,7 +5,7 @@ import (
 )
 
 type QueryExpression interface {
-	IsQuerySpecification()
+	isQuerySpecification()
 }
 
 func (v *parseTreeVisitor) VisitQueryExpression(ctx *parser.QueryExpressionContext) interface{} {

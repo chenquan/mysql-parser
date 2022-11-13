@@ -8,7 +8,7 @@ var _ TableSource = (*TableSourceBase)(nil)
 
 type (
 	TableSource interface {
-		IsTableSource()
+		isTableSource()
 	}
 
 	TableSourceBase struct {
@@ -16,8 +16,7 @@ type (
 	}
 )
 
-func (t TableSourceBase) IsTableSource() {
-}
+func (t TableSourceBase) isTableSource() {}
 func (v *parseTreeVisitor) VisitTableSourceBase(ctx *parser.TableSourceBaseContext) interface{} {
 	return TableSourceBase{TableSourceItem: ctx.TableSourceItem().Accept(v).(TableSourceItem)}
 }
