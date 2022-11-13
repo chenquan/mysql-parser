@@ -12,7 +12,7 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				AddIndexes: []TableAddIndex{{
@@ -35,7 +35,7 @@ func TestParser_AlterTableAddIndex(t *testing.T) {
 func TestParser_AlterTablePrimaryKey(t *testing.T) {
 	result := Parse("ALTER TABLE Persons\n ADD PRIMARY KEY  (user_name) USING HASH;")
 	assert.EqualValues(t, []SqlStatement{AlterTable{
-		tableName:    "Persons",
+		tableName:    TableName{Uid: "Persons"},
 		AddColumns:   nil,
 		DeleteColumn: nil,
 		AddPrimaryKeys: []TableAddPrimaryKey{
@@ -59,7 +59,7 @@ func TestParser_AlterTableUniqueKey(t *testing.T) {
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				AddUniqueKeys: []TableAddUniqueKey{{
@@ -84,7 +84,7 @@ func TestParser_AlterTableModifyColumn(t *testing.T) {
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				ModifyColumns: []TableModifyColumn{{
@@ -103,7 +103,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
@@ -121,7 +121,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 		t,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
@@ -138,7 +138,7 @@ func TestParser_AlterTableDropColumn(t *testing.T) {
 	assert.EqualValues(t,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				AddColumns:   nil,
 				DeleteColumn: nil,
 				DropColumns: []TableDropColumn{{
@@ -158,7 +158,7 @@ func TestParser_AlterTableDropPrimaryKey(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName:      "PERSONS",
+				tableName:      TableName{Uid: "PERSONS"},
 				DropPrimaryKey: true,
 			},
 		},
@@ -171,7 +171,7 @@ func TestParser_AlterTableRenameIndex(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName: "PERSONS",
+				tableName: TableName{Uid: "PERSONS"},
 				RenameIndexes: []TableRenameIndex{
 					{
 						FromColumn: "A",
@@ -189,7 +189,7 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName: "PERSONS",
+				tableName: TableName{Uid: "PERSONS"},
 				DropIndexes: []TableDropIndex{
 					{
 						IfExists: false,
@@ -205,7 +205,7 @@ func TestParser_AlterTableDropIndex(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName: "PERSONS",
+				tableName: TableName{Uid: "PERSONS"},
 				DropIndexes: []TableDropIndex{
 					{
 						IfExists: true,
@@ -223,7 +223,7 @@ func TestParser_AlterTableRename(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName: "PERSONS",
+				tableName: TableName{Uid: "PERSONS"},
 				Renames:   []string{"A"},
 			},
 		},
@@ -236,7 +236,7 @@ func Test_parseTreeVisitor_VisitAlterByAddColumn(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				DeleteColumn: nil,
 
 				AddColumns: []TableAddColumn{
@@ -260,7 +260,7 @@ func Test_parseTreeVisitor_VisitAlterByAddColumns(t *testing.T) {
 		result,
 		[]SqlStatement{
 			AlterTable{
-				tableName:    "PERSONS",
+				tableName:    TableName{Uid: "PERSONS"},
 				DeleteColumn: nil,
 				AddColumns: []TableAddColumn{
 					{

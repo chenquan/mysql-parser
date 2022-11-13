@@ -6,7 +6,7 @@ import (
 
 type (
 	AlterTable struct {
-		tableName      string
+		tableName      TableName
 		AddColumns     []TableAddColumn
 		DeleteColumn   []string
 		AddIndexes     []TableAddIndex
@@ -76,7 +76,7 @@ func (a AlterTable) IsDdlStatement() {
 
 func (v *parseTreeVisitor) VisitAlterTable(ctx *parser.AlterTableContext) interface{} {
 	table := AlterTable{
-		tableName: ctx.TableName().GetText(),
+		tableName: ctx.TableName().Accept(v).(TableName),
 	}
 
 	for _, alterSpecification := range ctx.AllAlterSpecification() {
