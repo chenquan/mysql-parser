@@ -19,8 +19,8 @@ type (
 		IfNotExists   bool
 		Replace       bool
 		Temporary     bool
-		FromTableName string
-		ToTableName   string
+		FromTableName FullId
+		ToTableName   FullId
 	}
 	QueryCreateTable struct {
 		IfNotExists       bool
@@ -81,8 +81,8 @@ func (v *parseTreeVisitor) VisitCopyCreateTable(ctx *parser.CopyCreateTableConte
 		IfNotExists:   ctx.IfNotExists() != nil,
 		Replace:       ctx.REPLACE() != nil,
 		Temporary:     ctx.TEMPORARY() != nil,
-		FromTableName: ctx.TableName(0).GetText(),
-		ToTableName:   ctx.TableName(1).GetText(),
+		FromTableName: ctx.TableName(0).Accept(v).(FullId),
+		ToTableName:   ctx.TableName(1).Accept(v).(FullId),
 	}
 }
 
