@@ -16,7 +16,7 @@ func Test_parseTreeVisitor_VisitDdlStatement(t *testing.T) {
 				IfNotExists: false,
 				Replace:     false,
 				Temporary:   false,
-				Table:       "A",
+				Table:       FullId{Uid: "A"},
 				CreateDefinitions: []CreateDefinition{
 					ColumnDeclaration{
 						Column: "a",
