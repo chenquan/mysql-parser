@@ -27,17 +27,10 @@ type (
 	}
 )
 
-func (c CreateDatabaseOptionReadonly) isCreateDatabaseOption() {
-}
-
-func (c CreateDatabaseOptionCollate) isCreateDatabaseOption() {
-}
-
-func (c CreateDatabaseOptionEncryption) isCreateDatabaseOption() {
-}
-
-func (c CreateDatabaseOptionCharSet) isCreateDatabaseOption() {
-}
+func (c CreateDatabaseOptionReadonly) isCreateDatabaseOption()   {}
+func (c CreateDatabaseOptionCollate) isCreateDatabaseOption()    {}
+func (c CreateDatabaseOptionEncryption) isCreateDatabaseOption() {}
+func (c CreateDatabaseOptionCharSet) isCreateDatabaseOption()    {}
 
 func (v *parseTreeVisitor) VisitCreateDatabaseOption(ctx *parser.CreateDatabaseOptionContext) interface{} {
 	charSetCtx := ctx.CharSet()

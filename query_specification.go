@@ -17,8 +17,7 @@ type (
 	}
 )
 
-func (q QuerySpecification) IsQuerySpecification() {
-}
+func (q QuerySpecification) isQuerySpecification() {}
 
 func (v *parseTreeVisitor) VisitQuerySpecification(ctx *parser.QuerySpecificationContext) interface{} {
 	selectSpecContexts := ctx.AllSelectSpec()

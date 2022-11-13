@@ -40,19 +40,11 @@ type (
 	}
 )
 
-func (i IndexOptionSecondaryEngineAttribute) isIndexOption() {
-}
-
-func (i IndexOptionEngineAttribute) isIndexOption() {
-}
-
-func (i IndexOptionVisible) isIndexOption() {}
-
-func (i IndexOptionComment) isIndexOption() {
-}
-
-func (i IndexOptionWithParser) isIndexOption() {
-}
+func (i IndexOptionSecondaryEngineAttribute) isIndexOption() {}
+func (i IndexOptionEngineAttribute) isIndexOption()          {}
+func (i IndexOptionVisible) isIndexOption()                  {}
+func (i IndexOptionComment) isIndexOption()                  {}
+func (i IndexOptionWithParser) isIndexOption()               {}
 
 func (i IndexOptionKeyBlockSize) isIndexOption() {
 }

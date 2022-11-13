@@ -10,15 +10,14 @@ var (
 
 type (
 	SelectIntoExpression interface {
-		IsSelectIntoExpression()
+		isSelectIntoExpression()
 	}
 	SelectIntoVariables struct {
 		AssignmentFields []AssignmentField
 	}
 )
 
-func (s SelectIntoVariables) IsSelectIntoExpression() {
-}
+func (s SelectIntoVariables) isSelectIntoExpression() {}
 
 func (v *parseTreeVisitor) VisitSelectIntoVariables(ctx *parser.SelectIntoVariablesContext) interface{} {
 	allAssignmentFields := ctx.AllAssignmentField()

@@ -31,23 +31,12 @@ type (
 	}
 )
 
-func (i InsertStatementSetValue) isSqlStatement() {
-}
-
-func (i InsertStatementSetValue) isDmlStatement() {
-}
-
-func (i InsertStatementSetValue) isInsertStatement() {
-}
-
-func (i InsertStatementIntoValue) isInsertStatement() {
-}
-
-func (i InsertStatementIntoValue) isSqlStatement() {
-}
-
-func (i InsertStatementIntoValue) isDmlStatement() {
-}
+func (i InsertStatementSetValue) isSqlStatement()     {}
+func (i InsertStatementSetValue) isDmlStatement()     {}
+func (i InsertStatementSetValue) isInsertStatement()  {}
+func (i InsertStatementIntoValue) isInsertStatement() {}
+func (i InsertStatementIntoValue) isSqlStatement()    {}
+func (i InsertStatementIntoValue) isDmlStatement()    {}
 
 func (v *parseTreeVisitor) VisitInsertStatement(ctx *parser.InsertStatementContext) interface{} {
 	var priority string

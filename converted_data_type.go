@@ -26,11 +26,8 @@ type (
 	}
 )
 
-func (l LengthTwoDimension) isLengthDimension() {
-}
-
-func (l LengthOneDimension) isLengthDimension() {
-}
+func (l LengthTwoDimension) isLengthDimension() {}
+func (l LengthOneDimension) isLengthDimension() {}
 
 func (v *parseTreeVisitor) VisitConvertedDataType(ctx *parser.ConvertedDataTypeContext) interface{} {
 	var typeName string

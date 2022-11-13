@@ -44,47 +44,20 @@ type (
 	}
 )
 
-func (c ConstantBitString) isFunctionArg() {
-}
-
-func (c ConstantReal) isFunctionArg() {
-}
-
-func (c ConstantHexadecimal) isFunctionArg() {
-}
-
-func (c ConstantDecimal) isFunctionArg() {
-}
-
-func (c ConstantNull) isFunctionArg() {
-}
-
-func (c ConstantString) isFunctionArg() {
-}
-
-func (c ConstantBool) isFunctionArg() {
-}
-
-func (c ConstantBitString) isConstant() {
-}
-
-func (c ConstantReal) isConstant() {
-}
-
-func (c ConstantHexadecimal) isConstant() {
-}
-
-func (c ConstantDecimal) isConstant() {
-}
-
-func (c ConstantNull) isConstant() {
-}
-
-func (c ConstantBool) isConstant() {
-}
-
-func (c ConstantString) isConstant() {
-}
+func (c ConstantBitString) isFunctionArg()   {}
+func (c ConstantReal) isFunctionArg()        {}
+func (c ConstantHexadecimal) isFunctionArg() {}
+func (c ConstantDecimal) isFunctionArg()     {}
+func (c ConstantNull) isFunctionArg()        {}
+func (c ConstantString) isFunctionArg()      {}
+func (c ConstantBool) isFunctionArg()        {}
+func (c ConstantBitString) isConstant()      {}
+func (c ConstantReal) isConstant()           {}
+func (c ConstantHexadecimal) isConstant()    {}
+func (c ConstantDecimal) isConstant()        {}
+func (c ConstantNull) isConstant()           {}
+func (c ConstantBool) isConstant()           {}
+func (c ConstantString) isConstant()         {}
 
 func (v *parseTreeVisitor) VisitConstant(ctx *parser.ConstantContext) interface{} {
 

@@ -19,11 +19,8 @@ type (
 	}
 )
 
-func (s SimpleFunctionCall) isSpecificFunction() {
-}
-
-func (d DataTypeFunctionCall) isFunctionCall() {
-}
+func (s SimpleFunctionCall) isSpecificFunction() {}
+func (d DataTypeFunctionCall) isFunctionCall()   {}
 
 func (v *parseTreeVisitor) VisitSimpleFunctionCall(ctx *parser.SimpleFunctionCallContext) interface{} {
 	child := ctx.GetChild(0)

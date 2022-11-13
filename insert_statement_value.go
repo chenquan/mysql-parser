@@ -21,11 +21,8 @@ type (
 	}
 )
 
-func (i InsertStatementValuedExpressionsWithDefaults) isInsertStatementValue() {
-}
-
-func (i InsertStatementValueSelectStatement) isInsertStatementValue() {
-}
+func (i InsertStatementValuedExpressionsWithDefaults) isInsertStatementValue() {}
+func (i InsertStatementValueSelectStatement) isInsertStatementValue()          {}
 
 func (v *parseTreeVisitor) VisitInsertStatementValue(ctx *parser.InsertStatementValueContext) interface{} {
 	selectStatementContext := ctx.SelectStatement()

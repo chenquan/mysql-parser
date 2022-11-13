@@ -68,11 +68,8 @@ type (
 	}
 )
 
-func (a AlterTable) isSqlStatement() {
-}
-
-func (a AlterTable) isDdlStatement() {
-}
+func (a AlterTable) isSqlStatement() {}
+func (a AlterTable) isDdlStatement() {}
 
 func (v *parseTreeVisitor) VisitAlterTable(ctx *parser.AlterTableContext) interface{} {
 	table := AlterTable{

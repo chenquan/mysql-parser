@@ -38,20 +38,11 @@ type (
 	}
 )
 
-func (f FunctionCallExpressionAtom) isExpressionAtom() {
-}
-
-func (n NestedExpressionAtom) isExpressionAtom() {
-}
-
-func (m MathExpressionAtom) isExpressionAtom() {
-}
-
-func (f FullColumnNameExpressionAtom) isExpressionAtom() {
-}
-
-func (c ConstantExpressionAtom) isExpressionAtom() {
-}
+func (f FunctionCallExpressionAtom) isExpressionAtom()   {}
+func (n NestedExpressionAtom) isExpressionAtom()         {}
+func (m MathExpressionAtom) isExpressionAtom()           {}
+func (f FullColumnNameExpressionAtom) isExpressionAtom() {}
+func (c ConstantExpressionAtom) isExpressionAtom()       {}
 
 func (v *parseTreeVisitor) VisitConstantExpressionAtom(ctx *parser.ConstantExpressionAtomContext) interface{} {
 	return ConstantExpressionAtom{Constant: ctx.Constant().Accept(v).(Constant)}

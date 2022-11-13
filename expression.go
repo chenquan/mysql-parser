@@ -31,17 +31,10 @@ type (
 	PredicateExpression Predicate
 )
 
-func (i IsExpression) isFunctionArg() {
-}
-
-func (l LogicalExpression) isFunctionArg() {
-}
-
-func (i IsExpression) isExpression() {
-}
-
-func (l LogicalExpression) isExpression() {
-}
+func (i IsExpression) isFunctionArg()      {}
+func (l LogicalExpression) isFunctionArg() {}
+func (i IsExpression) isExpression()       {}
+func (l LogicalExpression) isExpression()  {}
 
 func (v *parseTreeVisitor) VisitExpressions(ctx *parser.ExpressionsContext) interface{} {
 	allExpression := ctx.AllExpression()

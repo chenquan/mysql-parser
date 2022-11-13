@@ -14,11 +14,8 @@ type (
 	}
 )
 
-func (d DefaultColumnConstraint) isColumnConstraint() {
-}
-
-func (d DefaultColumnConstraint) isCreateDefinition() {
-}
+func (d DefaultColumnConstraint) isColumnConstraint() {}
+func (d DefaultColumnConstraint) isCreateDefinition() {}
 
 func (v *parseTreeVisitor) VisitColumnDefinition(ctx *parser.ColumnDefinitionContext) interface{} {
 	allColumnConstraint := ctx.AllColumnConstraint()

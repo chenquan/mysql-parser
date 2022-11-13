@@ -11,7 +11,7 @@ var (
 type (
 	SelectStatement interface {
 		DmlStatement
-		IsSelectStatement()
+		isSelectStatement()
 	}
 	SimpleSelect struct {
 		QuerySpecification QuerySpecification
@@ -21,14 +21,9 @@ type (
 	}
 )
 
-func (s SimpleSelect) isSqlStatement() {
-}
-
-func (s SimpleSelect) isDmlStatement() {
-}
-
-func (s SimpleSelect) IsSelectStatement() {
-}
+func (s SimpleSelect) isSqlStatement()    {}
+func (s SimpleSelect) isDmlStatement()    {}
+func (s SimpleSelect) isSelectStatement() {}
 
 func (v *parseTreeVisitor) VisitSimpleSelect(ctx *parser.SimpleSelectContext) interface{} {
 	return SimpleSelect{QuerySpecification: ctx.QuerySpecification().Accept(v).(QuerySpecification)}

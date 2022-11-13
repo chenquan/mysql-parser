@@ -16,11 +16,8 @@ type (
 	}
 )
 
-func (s SpecificFunctionCall) isFunctionArg() {
-}
-
-func (s SpecificFunctionCall) isFunctionCall() {
-}
+func (s SpecificFunctionCall) isFunctionArg()  {}
+func (s SpecificFunctionCall) isFunctionCall() {}
 
 func (v *parseTreeVisitor) VisitSpecificFunctionCall(ctx *parser.SpecificFunctionCallContext) interface{} {
 	switch c := ctx.GetChild(0).(type) {

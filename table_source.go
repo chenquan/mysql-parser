@@ -16,8 +16,7 @@ type (
 	}
 )
 
-func (t TableSourceBase) isTableSource() {
-}
+func (t TableSourceBase) isTableSource() {}
 func (v *parseTreeVisitor) VisitTableSourceBase(ctx *parser.TableSourceBaseContext) interface{} {
 	return TableSourceBase{TableSourceItem: ctx.TableSourceItem().Accept(v).(TableSourceItem)}
 }

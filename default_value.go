@@ -53,23 +53,12 @@ func (d DefaultValueNextValue) isDefaultValue() {
 func (d DefaultValuePreviousValue) isDefaultValue() {
 }
 
-func (d DefaultValueNextval) isDefaultValue() {
-}
-
-func (d DefaultValueLastval) isDefaultValue() {
-}
-
-func (d DefaultValueConstant) isDefaultValue() {
-}
-
-func (d DefaultValueExpression) isDefaultValue() {
-}
-
-func (d DefaultValueCast) isDefaultValue() {
-}
-
-func (d DefaultValueNullLiteral) isDefaultValue() {
-}
+func (d DefaultValueNextval) isDefaultValue()     {}
+func (d DefaultValueLastval) isDefaultValue()     {}
+func (d DefaultValueConstant) isDefaultValue()    {}
+func (d DefaultValueExpression) isDefaultValue()  {}
+func (d DefaultValueCast) isDefaultValue()        {}
+func (d DefaultValueNullLiteral) isDefaultValue() {}
 
 func (v *parseTreeVisitor) VisitDefaultValue(ctx *parser.DefaultValueContext) interface{} {
 	nullLiteralCtx := ctx.NULL_LITERAL()

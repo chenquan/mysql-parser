@@ -56,25 +56,13 @@ type (
 	}
 )
 
-func (c CopyCreateTable) isSqlStatement() {
-}
-
-func (p PrimaryKeyTableConstraint) isColumnConstraint() {
-}
-
-func (p PrimaryKeyTableConstraint) isCreateDefinition() {
-}
-
-func (c ColumnDeclaration) isCreateDefinition() {}
-
-func (c ColumnCreateTable) isCreatTable() {
-}
-
-func (q QueryCreateTable) isCreatTable() {
-}
-
-func (c CopyCreateTable) isCreatTable() {
-}
+func (c CopyCreateTable) isSqlStatement()               {}
+func (p PrimaryKeyTableConstraint) isColumnConstraint() {}
+func (p PrimaryKeyTableConstraint) isCreateDefinition() {}
+func (c ColumnDeclaration) isCreateDefinition()         {}
+func (c ColumnCreateTable) isCreatTable()               {}
+func (q QueryCreateTable) isCreatTable()                {}
+func (c CopyCreateTable) isCreatTable()                 {}
 
 func (v *parseTreeVisitor) VisitCopyCreateTable(ctx *parser.CopyCreateTableContext) interface{} {
 	return CopyCreateTable{

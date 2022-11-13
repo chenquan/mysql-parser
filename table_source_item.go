@@ -9,7 +9,7 @@ var (
 )
 
 type TableSourceItem interface {
-	IsTableSourceItem()
+	isTableSourceItem()
 }
 type (
 	AtomTableItem struct {
@@ -24,8 +24,7 @@ type (
 	}
 )
 
-func (a AtomTableItem) IsTableSourceItem() {
-}
+func (a AtomTableItem) isTableSourceItem() {}
 
 func (v *parseTreeVisitor) VisitAtomTableItem(ctx *parser.AtomTableItemContext) interface{} {
 	var alias string
