@@ -26,14 +26,15 @@ type (
 		IfNotExists       bool
 		Replace           bool
 		Temporary         bool
-		Table             string
+		Table             FullId
 		CreateDefinitions []CreateDefinition
+		SelectStatement   SelectStatement
 	}
 	ColumnCreateTable struct {
 		IfNotExists       bool
 		Replace           bool
 		Temporary         bool
-		Table             string
+		Table             FullId
 		CreateDefinitions []CreateDefinition
 	}
 	CreateDefinition interface {
@@ -86,24 +87,25 @@ func (v *parseTreeVisitor) VisitCopyCreateTable(ctx *parser.CopyCreateTableConte
 }
 
 func (v *parseTreeVisitor) VisitQueryCreateTable(ctx *parser.QueryCreateTableContext) interface{} {
-	//ctx.OR() != nil && ctx.AllREPLACE()
-
 	var createDefinitions []CreateDefinition
 	createDefinitionsContext := ctx.CreateDefinitions()
 	if createDefinitionsContext != nil {
 		createDefinitions = createDefinitionsContext.Accept(v).([]CreateDefinition)
 	}
+
+	var selectStatement SelectStatement
 	selectStatementContext := ctx.SelectStatement()
-	switch selectStatement := selectStatementContext.(type) {
-	case *parser.SimpleSelectContext:
-		selectStatement.Accept(v)
+	if selectStatementContext != nil {
+		selectStatement = selectStatementContext.Accept(v).(SelectStatement)
 	}
 
 	return QueryCreateTable{
-		IfNotExists: ctx.IfNotExists() != nil,
-		//Replace:     ctx.REPLACE() != nil,
+		IfNotExists:       ctx.IfNotExists() != nil,
+		Replace:           ctx.OR() != nil && ctx.REPLACE(0) != nil,
 		Temporary:         ctx.TEMPORARY() != nil,
+		Table:             ctx.TableName().Accept(v).(FullId),
 		CreateDefinitions: createDefinitions,
+		SelectStatement:   selectStatement,
 	}
 }
 
@@ -137,26 +139,19 @@ func (v *parseTreeVisitor) VisitConstraintDeclaration(ctx *parser.ConstraintDecl
 }
 
 func (v *parseTreeVisitor) VisitPrimaryKeyTableConstraint(ctx *parser.PrimaryKeyTableConstraintContext) interface{} {
-
-	name := ctx.GetName().GetText()
-	index := ctx.GetIndex().GetText()
-
 	return PrimaryKeyTableConstraint{
 		Constraint: ctx.CONSTRAINT() != nil,
-		Name:       name,
-		Index:      index,
+		Name:       ctx.GetName().GetText(),
+		Index:      ctx.GetIndex().GetText(),
 	}
 }
 
 func (v *parseTreeVisitor) VisitColumnCreateTable(ctx *parser.ColumnCreateTableContext) interface{} {
-
-	ctx.CreateDefinitions()
-
 	return ColumnCreateTable{
 		IfNotExists:       ctx.IfNotExists() != nil,
 		Replace:           ctx.REPLACE() != nil,
 		Temporary:         ctx.TEMPORARY() != nil,
-		Table:             ctx.TableName().GetText(),
+		Table:             ctx.TableName().Accept(v).(FullId),
 		CreateDefinitions: ctx.CreateDefinitions().Accept(v).([]CreateDefinition),
 	}
 }
