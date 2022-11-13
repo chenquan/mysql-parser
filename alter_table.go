@@ -44,9 +44,10 @@ type (
 	}
 
 	TableAddUniqueKey struct {
-		IndexName string
-		IndexType string
-		Columns   []IndexColumnName
+		IndexName    string
+		IndexType    IndexType
+		Columns      []IndexColumnName
+		IndexOptions []IndexOption
 	}
 	TableModifyColumn struct {
 		IfExists         bool
@@ -217,10 +218,11 @@ func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUnique
 	if indexNameContext != nil {
 		indexName = indexNameContext.GetText()
 	}
-	var indexType string
+
+	var indexType IndexType
 	indexTypeContext := ctx.IndexType()
 	if indexTypeContext != nil {
-		indexType = indexTypeContext.Accept(v).(string)
+		indexType = indexTypeContext.Accept(v).(IndexType)
 	}
 
 	var indexColumnNames []IndexColumnName
@@ -230,22 +232,19 @@ func (v *parseTreeVisitor) VisitAlterByAddUniqueKey(ctx *parser.AlterByAddUnique
 	}
 
 	allIndexOption := ctx.AllIndexOption()
-	for _, optionContext := range allIndexOption {
-		acceptVal := optionContext.Accept(v)
-		if acceptVal != nil {
-			switch val := acceptVal.(type) {
-			case IndexType:
-				if indexType == "" {
-					indexType = string(val)
-				}
-			}
+	var indexOptions []IndexOption
+	if len(allIndexOption) != 0 {
+		indexOptions = make([]IndexOption, 0, len(allIndexOption))
+		for _, optionContext := range allIndexOption {
+			indexOptions = append(indexOptions, optionContext.Accept(v).(IndexOption))
 		}
 	}
 
 	return TableAddUniqueKey{
-		IndexName: indexName,
-		IndexType: indexType,
-		Columns:   indexColumnNames,
+		IndexName:    indexName,
+		IndexType:    indexType,
+		Columns:      indexColumnNames,
+		IndexOptions: indexOptions,
 	}
 }
 

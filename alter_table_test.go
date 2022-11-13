@@ -55,28 +55,30 @@ func TestParser_AlterTablePrimaryKey(t *testing.T) {
 }
 
 func TestParser_AlterTableUniqueKey(t *testing.T) {
-	result := Parse("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
-	assert.EqualValues(t,
-		[]SqlStatement{
-			AlterTable{
-				tableName:    TableName{Uid: "PERSONS"},
-				AddColumns:   nil,
-				DeleteColumn: nil,
-				AddUniqueKeys: []TableAddUniqueKey{{
-					IndexName: "user_name_index",
-					IndexType: "",
-					Columns: []IndexColumnName{
-						{
-							IndexColumnName:   "user_name",
-							IndexColumnLength: 0,
-							SortType:          "",
+	t.Run("1", func(t *testing.T) {
+		result := Parse("ALTER TABLE PERSONS\n ADD UNIQUE user_name_index (user_name);")
+		assert.EqualValues(t,
+			[]SqlStatement{
+				AlterTable{
+					tableName:    TableName{Uid: "PERSONS"},
+					AddColumns:   nil,
+					DeleteColumn: nil,
+					AddUniqueKeys: []TableAddUniqueKey{{
+						IndexName: "user_name_index",
+						IndexType: "",
+						Columns: []IndexColumnName{
+							{
+								IndexColumnName:   "user_name",
+								IndexColumnLength: 0,
+								SortType:          "",
+							},
 						},
-					},
-				}},
+					}},
+				},
 			},
-		},
-		result,
-	)
+			result,
+		)
+	})
 }
 
 func TestParser_AlterTableModifyColumn(t *testing.T) {
@@ -283,4 +285,51 @@ func Test_parseTreeVisitor_VisitAlterByAddColumns(t *testing.T) {
 			},
 		},
 	)
+}
+
+func Test_parseTreeVisitor_VisitAlterByAddUniqueKey(t *testing.T) {
+	t.Run("1", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("Add UNIQUE u (a,b) USING HASH")
+		result := mySqlParser.AlterSpecification().Accept(visitor)
+		assert.EqualValues(t, TableAddUniqueKey{
+			IndexName: "u",
+			IndexType: "",
+			Columns: []IndexColumnName{
+				{
+					IndexColumnName:   "a",
+					IndexColumnLength: 0,
+					SortType:          "",
+				},
+				{
+					IndexColumnName:   "b",
+					IndexColumnLength: 0,
+					SortType:          "",
+				},
+			},
+			IndexOptions: []IndexOption{
+				IndexType("HASH"),
+			},
+		}, result)
+	})
+
+	t.Run("1", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("Add UNIQUE u USING HASH (a,b) ")
+		result := mySqlParser.AlterSpecification().Accept(visitor)
+		assert.EqualValues(t, TableAddUniqueKey{
+			IndexName: "u",
+			IndexType: IndexType("HASH"),
+			Columns: []IndexColumnName{
+				{
+					IndexColumnName:   "a",
+					IndexColumnLength: 0,
+					SortType:          "",
+				},
+				{
+					IndexColumnName:   "b",
+					IndexColumnLength: 0,
+					SortType:          "",
+				},
+			},
+		}, result)
+	})
 }
