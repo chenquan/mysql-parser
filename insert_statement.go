@@ -11,18 +11,20 @@ var (
 
 type (
 	InsertStatementIntoValue struct {
-		Priority             string
-		Ignore               bool
-		TableName            TableName
-		Columns              []string
-		InsertStatementValue InsertStatementValue
+		Priority                  string
+		Ignore                    bool
+		TableName                 TableName
+		Columns                   []string
+		InsertStatementValue      InsertStatementValue
+		DuplicatedUpdatedElements []UpdatedElement
 	}
 
 	InsertStatementSetValue struct {
-		Priority        string
-		Ignore          bool
-		TableName       TableName
-		UpdatedElements []UpdatedElement
+		Priority                  string
+		Ignore                    bool
+		TableName                 TableName
+		UpdatedElements           []UpdatedElement
+		DuplicatedUpdatedElements []UpdatedElement
 	}
 
 	InsertStatement interface {
@@ -46,6 +48,17 @@ func (v *parseTreeVisitor) VisitInsertStatement(ctx *parser.InsertStatementConte
 	}
 	tableName := ctx.TableName().Accept(v).(TableName)
 
+	var duplicatedUpdatedElements []UpdatedElement
+	if ctx.DUPLICATE() != nil && ctx.KEY() != nil {
+		allDuplicatedUpdatedElement := ctx.GetDuplicatedElements()
+		duplicatedUpdatedElements = make([]UpdatedElement, 0, len(allDuplicatedUpdatedElement)+1)
+		duplicatedUpdatedElements = append(duplicatedUpdatedElements, ctx.GetDuplicatedFirst().Accept(v).(UpdatedElement))
+		for _, updatedElementContext := range allDuplicatedUpdatedElement {
+			duplicatedUpdatedElements = append(duplicatedUpdatedElements, updatedElementContext.Accept(v).(UpdatedElement))
+		}
+
+	}
+
 	insertStatementValueContext := ctx.InsertStatementValue()
 	if insertStatementValueContext != nil {
 		columnsCtx := ctx.GetColumns()
@@ -55,26 +68,30 @@ func (v *parseTreeVisitor) VisitInsertStatement(ctx *parser.InsertStatementConte
 		}
 
 		return InsertStatementIntoValue{
-			Priority:             priority,
-			Ignore:               ctx.IGNORE() != nil,
-			TableName:            tableName,
-			Columns:              columns,
-			InsertStatementValue: insertStatementValueContext.Accept(v).(InsertStatementValue),
+			Priority:                  priority,
+			Ignore:                    ctx.IGNORE() != nil,
+			TableName:                 tableName,
+			Columns:                   columns,
+			InsertStatementValue:      insertStatementValueContext.Accept(v).(InsertStatementValue),
+			DuplicatedUpdatedElements: duplicatedUpdatedElements,
 		}
 	}
 
 	if ctx.SET() != nil {
-		allUpdatedElement := ctx.AllUpdatedElement()
-		updatedElements := make([]UpdatedElement, 0, len(allUpdatedElement))
+		allUpdatedElement := ctx.GetSetElements()
+		updatedElements := make([]UpdatedElement, 0, len(allUpdatedElement)+1)
+		updatedElements = append(updatedElements, ctx.GetSetFirst().Accept(v).(UpdatedElement))
+
 		for _, updatedElementContext := range allUpdatedElement {
 			updatedElements = append(updatedElements, updatedElementContext.Accept(v).(UpdatedElement))
 		}
 
 		return InsertStatementSetValue{
-			Priority:        priority,
-			Ignore:          ctx.IGNORE() != nil,
-			TableName:       tableName,
-			UpdatedElements: updatedElements,
+			Priority:                  priority,
+			Ignore:                    ctx.IGNORE() != nil,
+			TableName:                 tableName,
+			UpdatedElements:           updatedElements,
+			DuplicatedUpdatedElements: duplicatedUpdatedElements,
 		}
 	}
 
