@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -11,7 +10,6 @@ import (
 )
 
 func Test_parseTreeVisitor_VisitConstantExpressionAtom(t *testing.T) {
-	// FIXME
 	sql := "-132.3"
 	sql = strings.ToUpper(sql)
 	inputStream := antlr.NewInputStream(sql)
@@ -19,12 +17,11 @@ func Test_parseTreeVisitor_VisitConstantExpressionAtom(t *testing.T) {
 	lexer.RemoveErrorListeners()
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.LexerDefaultTokenChannel)
 	mySqlParser := parser.NewMySqlParser(tokens)
-	visitor := &parseTreeVisitor{
-		Result: &Result{},
-	}
-	fmt.Println(mySqlParser.ExpressionAtom().GetText())
+	visitor := &parseTreeVisitor{}
 	result := mySqlParser.ExpressionAtom().Accept(visitor)
-	_ = result
+	assert.EqualValues(t, ConstantExpressionAtom{
+		Constant: ConstantDecimal{Val: -132.3},
+	}, result)
 }
 
 func Test_parseTreeVisitor_VisitFullColumnNameExpressionAtom(t *testing.T) {
@@ -35,9 +32,7 @@ func Test_parseTreeVisitor_VisitFullColumnNameExpressionAtom(t *testing.T) {
 	lexer.RemoveErrorListeners()
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.LexerDefaultTokenChannel)
 	mySqlParser := parser.NewMySqlParser(tokens)
-	visitor := &parseTreeVisitor{
-		Result: &Result{},
-	}
+	visitor := &parseTreeVisitor{}
 
 	result := mySqlParser.ExpressionAtom().Accept(visitor)
 	assert.EqualValues(t, result, FullColumnNameExpressionAtom{FullColumnName: FullColumnName{

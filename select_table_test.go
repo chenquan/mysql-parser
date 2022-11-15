@@ -14,9 +14,7 @@ func createMySqlParser(sql string) (*parser.MySqlParser, *parseTreeVisitor) {
 	lexer.RemoveErrorListeners()
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.LexerDefaultTokenChannel)
 	mysqlParser := parser.NewMySqlParser(tokens)
-	visitor := &parseTreeVisitor{
-		Result: &Result{},
-	}
+	visitor := &parseTreeVisitor{}
 
 	return mysqlParser, visitor
 }

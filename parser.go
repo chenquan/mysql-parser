@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"encoding/json"
-
 	"github.com/chenquan/mysql-parser/internal/parser"
 )
 
@@ -16,16 +14,6 @@ type Result struct {
 
 type parseTreeVisitor struct {
 	parser.BaseMySqlParserVisitor
-	*Result
-}
-
-func (v *parseTreeVisitor) String() string {
-	data, err := json.Marshal(v)
-	if err != nil {
-		return ""
-	}
-
-	return string(data)
 }
 
 func (v *parseTreeVisitor) VisitRoot(ctx *parser.RootContext) interface{} {
