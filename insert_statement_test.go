@@ -129,4 +129,54 @@ func Test_parseTreeVisitor_VisitInsertStatement(t *testing.T) {
 			result)
 	})
 
+	t.Run("4", func(t *testing.T) {
+		mySqlParser, visitor := createMySqlParser("INSERT DELAYED Ignore INTO A SET a=1,b=2 ON DUPLICATE KEY UPDATE c=1")
+		result := mySqlParser.InsertStatement().Accept(visitor)
+		assert.EqualValues(t,
+			InsertStatementSetValue{
+				Priority: "DELAYED",
+				Ignore:   true,
+				TableName: TableName{
+					Uid:   "A",
+					DotId: "",
+				},
+				UpdatedElements: []UpdatedElement{
+					{
+						FullColumnName: FullColumnName{
+							Uid:       "a",
+							DottedIds: nil,
+						},
+						Value: ExpressionOrDefault{
+							Default:    false,
+							Expression: ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
+						},
+					},
+
+					{
+						FullColumnName: FullColumnName{
+							Uid:       "b",
+							DottedIds: nil,
+						},
+						Value: ExpressionOrDefault{
+							Default:    false,
+							Expression: ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 2}}},
+						},
+					},
+				},
+				DuplicatedUpdatedElements: []UpdatedElement{
+					{
+						FullColumnName: FullColumnName{
+							Uid:       "c",
+							DottedIds: nil,
+						},
+						Value: ExpressionOrDefault{
+							Default:    false,
+							Expression: ExpressionAtomPredicate{ExpressionAtom: ConstantExpressionAtom{Constant: ConstantDecimal{Val: 1}}},
+						},
+					},
+				},
+			},
+			result)
+	})
+
 }
