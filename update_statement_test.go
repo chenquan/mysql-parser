@@ -72,8 +72,8 @@ func Test_parseTreeVisitor_VisitSingleUpdateStatement(t *testing.T) {
 
 func Test_parseTreeVisitor_VisitMultipleUpdateStatement(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
-		mySqlParser, visitor := createMySqlParser("UPDATE LOW_PRIORITY IGNORE t1, t2 SET a=1,b=2 WHERE t1.a>1 AND t2.b>2")
-		result := mySqlParser.SingleUpdateStatement().Accept(visitor)
+		mySqlParser, visitor := createMySqlParser("UPDATE LOW_PRIORITY IGNORE t1,t2 SET t1.a=1, t2.b=2 WHERE t1.a>1 AND t2.b>2")
+		result := mySqlParser.MultipleUpdateStatement().Accept(visitor)
 		assert.EqualValues(t,
 			MultipleUpdateStatement{
 				LowPriority: true,
@@ -90,8 +90,12 @@ func Test_parseTreeVisitor_VisitMultipleUpdateStatement(t *testing.T) {
 				UpdatedElements: []UpdatedElement{
 					{
 						FullColumnName: FullColumnName{
-							Uid:       "a",
-							DottedIds: nil,
+							Uid: "t1",
+							DottedIds: []DottedId{
+								{
+									Uid: "a",
+								},
+							},
 						},
 						Value: ExpressionOrDefault{
 							Default:    false,
@@ -100,8 +104,12 @@ func Test_parseTreeVisitor_VisitMultipleUpdateStatement(t *testing.T) {
 					},
 					{
 						FullColumnName: FullColumnName{
-							Uid:       "b",
-							DottedIds: nil,
+							Uid: "t2",
+							DottedIds: []DottedId{
+								{
+									Uid: "b",
+								},
+							},
 						},
 						Value: ExpressionOrDefault{
 							Default:    false,
